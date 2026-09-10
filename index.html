@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>คู่มือการจัดตั้งและบริหารมูลนิธิ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Noto+Serif+Thai:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c2431;
+    --ink-soft:#38425a;
+    --paper:#f6f1e6;
+    --paper-raised:#fffcf5;
+    --paper-deep:#efe8d8;
+    --seal:#a2402c;
+    --seal-soft:#c96a4f;
+    --gold:#9c7a2e;
+    --gold-soft:#c7a75f;
+    --line:#ddd0ac;
+    --muted:#6b6455;
+    --shadow: 0 18px 40px -20px rgba(28,36,49,.35);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1200px 500px at 15% -10%, #fffef9 0%, transparent 60%),
+      var(--paper);
+    color:var(--ink);
+    font-family:'Sarabun', sans-serif;
+    font-size:16px;
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px 90px;}
+
+  /* ---------- Header / cover ---------- */
+  .cover{
+    position:relative;
+    padding:56px 20px 44px;
+    border-bottom:1px solid var(--line);
+    margin-bottom:34px;
+    overflow:hidden;
+  }
+  .cover::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      repeating-linear-gradient(90deg, rgba(156,122,46,.06) 0 1px, transparent 1px 90px);
+    pointer-events:none;
+  }
+  .cover-inner{
+    max-width:1040px;margin:0 auto;
+    display:flex; align-items:center; gap:34px; flex-wrap:wrap;
+    position:relative;
+  }
+  .seal{
+    flex:0 0 auto;
+    width:96px;height:96px;
+    border-radius:50%;
+    border:2.5px solid var(--seal);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+    color:var(--seal);
+  }
+  .seal::before{
+    content:"";
+    position:absolute; inset:8px;
+    border:1px solid var(--seal);
+    border-radius:50%;
+  }
+  .seal span{
+    font-family:'Noto Serif Thai', serif;
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:1px;
+    text-align:center;
+    line-height:1.15;
+  }
+  .cover h1{
+    font-family:'Noto Serif Thai', serif;
+    font-weight:700;
+    font-size:clamp(28px, 4vw, 42px);
+    margin:0 0 10px;
+    color:var(--ink);
+  }
+  .cover p{
+    margin:0; color:var(--ink-soft); max-width:60ch; font-size:16.5px;
+  }
+  .cover .ref{
+    margin-top:14px; font-size:13.5px; color:var(--muted);
+    border-top:1px dashed var(--line); padding-top:12px; max-width:60ch;
+  }
+
+  /* ---------- Tabs ---------- */
+  .tabbar{
+    display:flex; gap:4px; flex-wrap:wrap;
+    border-bottom:2px solid var(--ink);
+    margin-bottom:0;
+    padding:0 4px;
+  }
+  .tabbtn{
+    font-family:'Sarabun',sans-serif;
+    font-size:15px;
+    font-weight:600;
+    color:var(--ink-soft);
+    background:var(--paper-deep);
+    border:1px solid var(--line);
+    border-bottom:none;
+    border-radius:8px 8px 0 0;
+    padding:13px 20px 12px;
+    cursor:pointer;
+    position:relative;
+    top:2px;
+    transition:background .15s ease, color .15s ease, top .15s ease;
+  }
+  .tabbtn .num{
+    display:inline-block;
+    font-family:'Noto Serif Thai',serif;
+    color:var(--gold);
+    margin-inline-end:8px;
+    font-weight:700;
+  }
+  .tabbtn:hover{ background:var(--paper-raised); color:var(--ink); }
+  .tabbtn[aria-selected="true"]{
+    background:var(--paper-raised);
+    color:var(--ink);
+    border-color:var(--ink);
+    border-bottom:2px solid var(--paper-raised);
+    top:2px;
+    box-shadow: 0 -6px 14px -10px rgba(28,36,49,.25);
+  }
+  .tabbtn[aria-selected="true"] .num{ color:var(--seal); }
+
+  .panelhost{
+    background:var(--paper-raised);
+    border:1px solid var(--ink);
+    border-top:none;
+    border-radius:0 0 10px 10px;
+    box-shadow:var(--shadow);
+    padding:38px clamp(20px,4vw,52px) 46px;
+  }
+  .panel{ display:none; animation:fade .25s ease; }
+  .panel.active{ display:block; }
+  @keyframes fade{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;} }
+
+  .panel > .lede{
+    font-size:16.5px; color:var(--ink-soft); max-width:72ch;
+    margin:0 0 30px; padding-bottom:22px; border-bottom:1px dashed var(--line);
+  }
+
+  h2.sec{
+    font-family:'Noto Serif Thai', serif;
+    font-size:22px; font-weight:700;
+    color:var(--ink);
+    margin:40px 0 6px;
+    display:flex; align-items:baseline; gap:10px;
+  }
+  h2.sec:first-of-type{margin-top:0;}
+  h2.sec .tag{
+    font-family:'Sarabun',sans-serif;
+    font-size:12.5px; font-weight:600; color:var(--seal);
+    border:1px solid var(--seal-soft);
+    border-radius:999px; padding:2px 10px;
+    white-space:nowrap;
+  }
+  .secsub{ color:var(--muted); font-size:14.5px; margin:0 0 20px; }
+
+  /* ---------- Timeline (Tab 1) ---------- */
+  .phase{ margin-bottom:8px; }
+  .phase-head{
+    display:flex; align-items:center; gap:12px;
+    margin:38px 0 18px;
+  }
+  .phase-head .ph-mark{
+    width:34px;height:34px;flex:0 0 auto;
+    border-radius:50%;
+    border:1.5px solid var(--gold);
+    color:var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Noto Serif Thai',serif; font-weight:700; font-size:15px;
+  }
+  .phase-head h3{
+    font-family:'Noto Serif Thai',serif;
+    font-size:19px; margin:0; color:var(--ink); font-weight:600;
+  }
+  .timeline{
+    position:relative;
+    margin:0 0 0 17px;
+    padding-left:34px;
+    border-left:2px solid var(--line);
+  }
+  .step{
+    position:relative;
+    padding:0 0 26px 0;
+  }
+  .step:last-child{padding-bottom:4px;}
+  .step::before{
+    content: attr(data-n);
+    position:absolute;
+    left:-45px; top:0;
+    width:26px;height:26px;
+    background:var(--paper-raised);
+    border:2px solid var(--ink);
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px; font-weight:700; color:var(--ink);
+    font-family:'Sarabun',sans-serif;
+  }
+  .step h4{
+    margin:0 0 5px; font-size:16.5px; font-weight:600; color:var(--ink);
+  }
+  .step p{ margin:0; color:var(--ink-soft); font-size:15px; }
+  .step .doclink{
+    display:inline-block; margin-top:8px;
+    font-size:13px; color:var(--seal);
+    background:#f4e6de; border:1px solid #e3c3b3;
+    padding:2px 10px; border-radius:6px;
+  }
+
+  /* ---------- Document list (Tab 2) ---------- */
+  .doc-group{ margin-bottom:14px; }
+  .doc-group summary{
+    cursor:pointer;
+    list-style:none;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:16px 20px;
+    background:var(--paper-deep);
+    border:1px solid var(--line);
+    border-radius:8px;
+    font-weight:600; font-size:16px; color:var(--ink);
+  }
+  .doc-group summary::-webkit-details-marker{ display:none; }
+  .doc-group summary::after{
+    content:"+";
+    font-size:20px; color:var(--gold); font-weight:400;
+    transition:transform .15s ease;
+  }
+  .doc-group[open] summary::after{ content:"–"; }
+  .doc-group summary .count{
+    font-size:12.5px; color:var(--muted); font-weight:500;
+  }
+  .doc-body{
+    border:1px solid var(--line); border-top:none;
+    border-radius:0 0 8px 8px;
+    padding:6px 22px 14px;
+  }
+  .doc-item{
+    display:flex; gap:14px; align-items:flex-start;
+    padding:14px 0; border-top:1px dashed var(--line);
+  }
+  .doc-item:first-child{ border-top:none; }
+  .doc-item .stamp{
+    flex:0 0 auto; width:30px;height:30px; margin-top:2px;
+    border:1.5px solid var(--gold-soft); border-radius:6px;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--gold); font-size:13px; font-weight:700; font-family:'Noto Serif Thai',serif;
+  }
+  .doc-item h4{ margin:0 0 4px; font-size:15.5px; font-weight:600; }
+  .doc-item p{ margin:0; font-size:14.5px; color:var(--ink-soft); }
+  .doc-item .meta{
+    display:inline-block; margin-top:6px; font-size:12.5px; color:var(--muted);
+  }
+
+  /* ---------- Regulation clauses (Tab 3) ---------- */
+  .clause{
+    display:grid; grid-template-columns:64px 1fr; gap:18px;
+    padding:20px 0; border-top:1px dashed var(--line);
+  }
+  .clause:first-child{border-top:none;}
+  .clause .cnum{
+    font-family:'Noto Serif Thai',serif; font-weight:700; font-size:15px;
+    color:var(--seal); padding-top:2px;
+  }
+  .clause h4{ margin:0 0 6px; font-size:16.5px; font-weight:600; }
+  .clause p{ margin:0 0 8px; color:var(--ink-soft); font-size:15px; }
+  .clause ul{ margin:8px 0 0; padding-left:20px; color:var(--ink-soft); font-size:14.5px; }
+  .clause li{ margin-bottom:5px; }
+  .pill-row{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+  .pill{
+    font-size:13px; background:var(--paper-deep); border:1px solid var(--line);
+    padding:4px 11px; border-radius:999px; color:var(--ink-soft);
+  }
+
+  /* ---------- Audit tab (Tab 4) ---------- */
+  .flow{
+    display:flex; flex-direction:column; gap:0;
+    margin:6px 0 10px;
+  }
+  .flow-step{
+    display:grid; grid-template-columns:30px 1fr; gap:16px;
+    padding:16px 0;
+    border-top:1px dashed var(--line);
+  }
+  .flow-step:first-child{border-top:none;}
+  .flow-step .fdot{
+    width:14px;height:14px;border-radius:50%;
+    background:var(--paper-raised); border:2px solid var(--seal);
+    margin-top:5px;
+  }
+  .flow-step h4{ margin:0 0 4px; font-size:15.5px; font-weight:600; }
+  .flow-step p{ margin:0; font-size:14.5px; color:var(--ink-soft); }
+
+  .checklist{
+    columns:2; column-gap:28px;
+    list-style:none; margin:0; padding:0;
+    font-size:14.5px; color:var(--ink-soft);
+  }
+  .checklist li{
+    break-inside:avoid; display:flex; gap:9px; padding:7px 0;
+    border-top:1px dotted var(--line);
+  }
+  .checklist li:nth-child(1),.checklist li:nth-child(2){border-top:none;}
+  .checklist li::before{
+    content:"☐"; color:var(--gold); font-size:15px; line-height:1.4;
+  }
+  @media (max-width:640px){ .checklist{ columns:1; } }
+
+  .warn{
+    background:#f7ece6; border:1px solid #e6c8b6; border-radius:8px;
+    padding:16px 18px; margin:10px 0 4px;
+    font-size:14.5px; color:#6b3a26;
+  }
+  .warn strong{ color:var(--seal); }
+
+  /* ---------- Writing guide (Tab 5) ---------- */
+  .guide-card{
+    border:1px solid var(--line); border-radius:10px;
+    margin-bottom:20px; overflow:hidden; background:var(--paper-raised);
+  }
+  .guide-card > .gc-head{
+    background:var(--paper-deep);
+    padding:14px 20px;
+    font-weight:600; font-size:16px;
+    display:flex; align-items:center; gap:10px;
+    border-bottom:1px solid var(--line);
+  }
+  .guide-card > .gc-head .gnum{
+    font-family:'Noto Serif Thai',serif; color:var(--gold); font-weight:700;
+  }
+  .gc-body{ padding:18px 20px 20px; }
+  .gc-body p{ margin:0 0 10px; font-size:15px; color:var(--ink-soft); }
+  .gc-body ul{ margin:8px 0 12px; padding-left:20px; font-size:14.5px; color:var(--ink-soft); }
+  .gc-body li{ margin-bottom:6px; }
+  .sample{
+    background:var(--paper-deep);
+    border-left:3px solid var(--gold);
+    padding:12px 16px; margin-top:12px;
+    font-size:14px; color:var(--ink-soft);
+    font-family:'Sarabun',sans-serif;
+  }
+  .sample .lbl{
+    display:block; font-size:12px; letter-spacing:.02em; color:var(--gold);
+    font-weight:600; margin-bottom:5px;
+  }
+
+  footer.note{
+    max-width:1040px;margin:34px auto 0; padding:0 20px;
+    font-size:13px; color:var(--muted);
+  }
+
+  @media (max-width:700px){
+    .cover-inner{gap:18px;}
+    .seal{width:74px;height:74px;}
+    .seal span{font-size:12px;}
+    .clause{grid-template-columns:44px 1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-inner">
+    <div class="seal"><span>ตรา<br>มูลนิธิ</span></div>
+    <div>
+      <h1>คู่มือการจัดตั้งและบริหารมูลนิธิ</h1>
+      <p>รวมขั้นตอนการจดทะเบียน เอกสารที่ต้องเตรียม ข้อกำหนดทางกฎหมาย แนวทางการปิดงบและตรวจสอบบัญชี พร้อมวิธีเขียนเอกสารแต่ละฉบับ — เรียบเรียงจากแบบฟอร์มและระเบียบที่ใช้ยื่นต่อนายทะเบียนมูลนิธิ</p>
+      <div class="ref">อ้างอิงจากประมวลกฎหมายแพ่งและพาณิชย์ว่าด้วยมูลนิธิ และแบบฟอร์มราชการที่เกี่ยวข้อง (ม.น. 1, ม.น. 2, ม.น. 6, ม.น. 7 และแบบรับรองกรรมการ) — ใช้เป็นข้อมูลประกอบการเตรียมเอกสาร ควรตรวจสอบกับนายทะเบียนในพื้นที่ก่อนยื่นจริง</div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="tabbar" role="tablist">
+    <button class="tabbtn" role="tab" aria-selected="true" data-tab="t1"><span class="num">๑</span>ขั้นตอนการจัดตั้ง</button>
+    <button class="tabbtn" role="tab" aria-selected="false" data-tab="t2"><span class="num">๒</span>เอกสารที่ต้องมี</button>
+    <button class="tabbtn" role="tab" aria-selected="false" data-tab="t3"><span class="num">๓</span>ระเบียบข้อบังคับ</button>
+    <button class="tabbtn" role="tab" aria-selected="false" data-tab="t4"><span class="num">๔</span>ปิดงบ &amp; ตรวจสอบ</button>
+    <button class="tabbtn" role="tab" aria-selected="false" data-tab="t5"><span class="num">๕</span>วิธีเขียนเอกสาร</button>
+  </div>
+
+  <div class="panelhost">
+
+    <!-- ============ TAB 1: PROCESS ============ -->
+    <section class="panel active" id="t1">
+      <p class="lede">ตั้งแต่วางโครงสร้างก่อนยื่นคำขอ ไปจนถึงหน้าที่รายงานประจำปี การเปลี่ยนแปลงกรรมการ/ข้อบังคับ และขั้นตอนเมื่อต้องเลิกมูลนิธิ — เรียงตามลำดับเวลาให้เห็นภาพรวมทั้งวงจร</p>
+
+      <div class="phase">
+        <div class="phase-head"><div class="ph-mark">A</div><h3>ก่อนยื่นคำขอ — วางโครงสร้างมูลนิธิ</h3></div>
+        <div class="timeline">
+          <div class="step" data-n="1">
+            <h4>กำหนดวัตถุประสงค์ของมูลนิธิ</h4>
+            <p>ระบุให้ชัดเจน ไม่กว้างจนหน่วยงานพิจารณายาก และสอดคล้องกับกิจกรรมที่จะทำจริง เช่น การศึกษา การสงเคราะห์ผู้ป่วย การศาสนา หรือสาธารณประโยชน์ด้านอื่น</p>
+          </div>
+          <div class="step" data-n="2">
+            <h4>เตรียมทุนทรัพย์ตั้งต้น</h4>
+            <p>มูลนิธิต้องมีทรัพย์สินที่จัดสรรไว้เพื่อวัตถุประสงค์ตั้งแต่แรก เจ้าของทรัพย์สินต้องให้คำมั่นว่าจะมอบทรัพย์สินให้มูลนิธิเมื่อจดทะเบียนสำเร็จ</p>
+            <span class="doclink">เอกสาร: หนังสือคำมั่นสัญญา</span>
+          </div>
+          <div class="step" data-n="3">
+            <h4>ตั้งชื่อมูลนิธิ</h4>
+            <p>ชื่อควรสะท้อนวัตถุประสงค์ ไม่ซ้ำหรือใกล้เคียงจนสับสนกับองค์กรอื่น หากนำชื่อบุคคลหรือหน่วยงานมาประกอบเป็นชื่อมูลนิธิ ต้องได้รับอนุญาตจากเจ้าของชื่อก่อน</p>
+            <span class="doclink">เอกสาร: หนังสืออนุญาตให้ใช้ชื่อ (ถ้ามี)</span>
+          </div>
+          <div class="step" data-n="4">
+            <h4>จัดหาที่ตั้งสำนักงาน</h4>
+            <p>ต้องมีที่ตั้งชัดเจนทั้งสำนักงานใหญ่และสาขา (ถ้ามี) พร้อมหนังสือยินยอมจากเจ้าของหรือผู้มีสิทธิครอบครองสถานที่ และแผนผังที่ตั้งโดยสังเขป</p>
+            <span class="doclink">เอกสาร: หนังสืออนุญาตให้ใช้สถานที่</span>
+          </div>
+          <div class="step" data-n="5">
+            <h4>คัดเลือกผู้จะเป็นกรรมการ</h4>
+            <p>ผู้จะเป็นกรรมการทุกคนต้องกรอกแบบรับรองตนเอง เปิดเผยสัญชาติ อาชีพ ทรัพย์สิน ประวัติการทำงานกับองค์กรการกุศล และประวัติคดีความ (ถ้ามี)</p>
+            <span class="doclink">เอกสาร: แบบรับรองของบุคคลผู้จะเป็นกรรมการ</span>
+          </div>
+          <div class="step" data-n="6">
+            <h4>ยกร่างข้อบังคับมูลนิธิ</h4>
+            <p>ร่างข้อบังคับให้ครบตามหมวดที่กฎหมายกำหนด (ดูรายละเอียดในแท็บ “ระเบียบข้อบังคับ”) เพื่อใช้เป็นกติกาบริหารองค์กรระยะยาว</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><div class="ph-mark">B</div><h3>ประชุมคณะผู้เริ่มการจัดตั้ง</h3></div>
+        <div class="timeline">
+          <div class="step" data-n="7">
+            <h4>จัดประชุมผู้เริ่มการ</h4>
+            <p>ที่ประชุมต้องมีมติรับรองข้อบังคับ แต่งตั้งคณะกรรมการบริหารมูลนิธิชุดแรก และมอบหมายผู้ยื่นคำร้องต่อนายทะเบียน — บันทึกทุกมติไว้ในรายงานการประชุม</p>
+            <span class="doclink">เอกสาร: รายงานการประชุมจัดตั้งมูลนิธิ</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><div class="ph-mark">C</div><h3>ยื่นคำขอจดทะเบียน</h3></div>
+        <div class="timeline">
+          <div class="step" data-n="8">
+            <h4>ยื่นคำขอจดทะเบียนจัดตั้งมูลนิธิ</h4>
+            <p>ยื่นต่อนายทะเบียนมูลนิธิในพื้นที่ (กรุงเทพมหานคร: สำนักงานเขต / ต่างจังหวัด: ที่ว่าการอำเภอหรือจังหวัด) พร้อมเอกสารประกอบครบชุด โดยทั่วไปจัดเตรียมอย่างละ 3 ชุด</p>
+          </div>
+          <div class="step" data-n="9">
+            <h4>พนักงานเจ้าหน้าที่ตรวจเอกสาร</h4>
+            <p>หากพบข้อมูลไม่ตรงกัน เช่น รายชื่อกรรมการในข้อบังคับไม่ตรงกับรายงานการประชุม หรือวัตถุประสงค์เขียนกว้างเกินไป เจ้าหน้าที่จะแจ้งให้แก้ไขก่อนพิจารณาต่อ</p>
+          </div>
+          <div class="step" data-n="10">
+            <h4>นายทะเบียนพิจารณาอนุญาต</h4>
+            <p>เมื่อเอกสารครบถ้วนถูกต้อง นายทะเบียนจะออกใบสำคัญแสดงการจดทะเบียนจัดตั้งมูลนิธิ ทำให้มูลนิธิมีสถานะเป็นนิติบุคคลตามกฎหมาย</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><div class="ph-mark">D</div><h3>หลังจดทะเบียน — งานต่อเนื่องทุกปี</h3></div>
+        <div class="timeline">
+          <div class="step" data-n="11">
+            <h4>ตั้งระบบบัญชีและภาษี</h4>
+            <p>ขอเลขประจำตัวผู้เสียภาษี เปิดบัญชีธนาคารในนามมูลนิธิแยกจากบัญชีส่วนตัวของกรรมการ และจัดทำตรามูลนิธิ</p>
+          </div>
+          <div class="step" data-n="12">
+            <h4>ดำเนินกิจกรรมและเก็บเอกสาร</h4>
+            <p>เก็บหลักฐานเงินบริจาค ใบอนุโมทนา เอกสารรายจ่าย และรายงานกิจกรรม/โครงการอย่างต่อเนื่องตั้งแต่ปีแรก</p>
+          </div>
+          <div class="step" data-n="13">
+            <h4>ปิดงบการเงินประจำปี</h4>
+            <p>จัดทำงบการเงินและส่งให้ผู้สอบบัญชีตรวจสอบ ก่อนเสนอคณะกรรมการรับทราบ (รายละเอียดในแท็บ “ปิดงบ &amp; ตรวจสอบ”)</p>
+          </div>
+          <div class="step" data-n="14">
+            <h4>ยื่นรายงานกิจการประจำปี</h4>
+            <p>ส่งแบบรายงานการดำเนินกิจการของมูลนิธิต่อนายทะเบียนเป็นประจำทุกปี สรุปกรรมการ วัตถุประสงค์ กิจกรรม การเงิน และทรัพย์สิน</p>
+            <span class="doclink">เอกสาร: แบบรายงานการดำเนินกิจการของมูลนิธิ</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><div class="ph-mark">E</div><h3>เมื่อมีการเปลี่ยนแปลง</h3></div>
+        <div class="timeline">
+          <div class="step" data-n="15">
+            <h4>เปลี่ยนกรรมการ หรือแก้ไขข้อบังคับ</h4>
+            <p>ประชุมคณะกรรมการให้มีมติ บันทึกรายงานการประชุม แล้วยื่นคำขอจดทะเบียนเปลี่ยนแปลงต่อนายทะเบียน — กรณีแก้ไขข้อบังคับต้องแนบตารางเปรียบเทียบฉบับเก่ากับฉบับใหม่ด้วย</p>
+            <span class="doclink">เอกสาร: คำขอจดทะเบียนแต่งตั้ง/เปลี่ยนแปลงกรรมการ หรือแก้ไขข้อบังคับ</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><div class="ph-mark">F</div><h3>การเลิกมูลนิธิ (กรณีมี)</h3></div>
+        <div class="timeline">
+          <div class="step" data-n="16">
+            <h4>มีมติให้เลิกมูลนิธิ</h4>
+            <p>ที่ประชุมมีมติให้เลิกและแต่งตั้งผู้ชำระบัญชี จากนั้นแจ้งการเลิกมูลนิธิต่อนายทะเบียนพร้อมเอกสารประกอบ</p>
+            <span class="doclink">เอกสาร: แบบแจ้งการเลิกมูลนิธิ</span>
+          </div>
+          <div class="step" data-n="17">
+            <h4>ผู้ชำระบัญชีดำเนินการ</h4>
+            <p>โฆษณาการเลิกมูลนิธิในหนังสือพิมพ์ แจ้งเจ้าหนี้เป็นหนังสือ จัดทำงบดุล ณ วันเลิก จำหน่ายทรัพย์สิน และชำระหนี้สินให้เรียบร้อย โดยมีผู้สอบบัญชีตรวจสอบ</p>
+          </div>
+          <div class="step" data-n="18">
+            <h4>รายงานการชำระบัญชี</h4>
+            <p>เมื่อชำระบัญชีเสร็จสิ้น ผู้ชำระบัญชีรายงานผลต่อนายทะเบียน มูลนิธิจึงสิ้นสภาพความเป็นนิติบุคคล</p>
+            <span class="doclink">เอกสาร: แบบรายงานการชำระบัญชี</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TAB 2: DOCUMENTS ============ -->
+    <section class="panel" id="t2">
+      <p class="lede">เอกสารแบ่งตามช่วงของการดำเนินการ — ชุดขอจดทะเบียนครั้งแรก, เอกสารระหว่างดำเนินกิจการ, เอกสารเมื่อมีการเปลี่ยนแปลง และเอกสารเมื่อเลิกมูลนิธิ คลิกแต่ละหมวดเพื่อดูรายละเอียด</p>
+
+      <details class="doc-group" open>
+        <summary>ก. ชุดขอจดทะเบียนจัดตั้ง (ยื่นครั้งแรก)<span class="count">11 รายการ</span></summary>
+        <div class="doc-body">
+          <div class="doc-item"><div class="stamp">1</div><div><h4>คำขอจดทะเบียนจัดตั้งมูลนิธิ</h4><p>แบบคำขอหลัก ระบุตัวผู้ยื่น ชื่อมูลนิธิ ที่ตั้งสำนักงานใหญ่/สาขา และรายการเอกสารแนบทั้งหมด</p></div></div>
+          <div class="doc-item"><div class="stamp">2</div><div><h4>บัญชีรายชื่อกรรมการของมูลนิธิ</h4><p>ชื่อ-สกุล อายุ ที่อยู่ อาชีพ ตำแหน่งในมูลนิธิ และวันที่ได้รับแต่งตั้งของกรรมการทุกคน</p></div></div>
+          <div class="doc-item"><div class="stamp">3</div><div><h4>แบบรับรองของบุคคลผู้จะเป็นกรรมการ</h4><p>กรอกเป็นรายบุคคล ทุกคนที่จะเป็นกรรมการ เปิดเผยข้อมูลส่วนตัว ทรัพย์สิน อาชีพ และประวัติที่เกี่ยวข้อง</p><span class="meta">แนบสำเนาบัตรประชาชน/หนังสือเดินทาง (กรณีคนต่างด้าว)</span></div></div>
+          <div class="doc-item"><div class="stamp">4</div><div><h4>ข้อบังคับมูลนิธิ</h4><p>กติกาบริหารองค์กร ครอบคลุมชื่อ ที่ตั้ง วัตถุประสงค์ ทุนทรัพย์ กรรมการ การประชุม การเงิน และการเลิกมูลนิธิ</p></div></div>
+          <div class="doc-item"><div class="stamp">5</div><div><h4>หนังสือคำมั่นสัญญา</h4><p>เจ้าของทรัพย์สินให้คำมั่นว่าจะมอบทรัพย์สินแก่มูลนิธิภายใน 30 วันหลังจดทะเบียนสำเร็จ</p><span class="meta">แนบหนังสือรับรองบัญชีเงินฝากจากธนาคาร</span></div></div>
+          <div class="doc-item"><div class="stamp">6</div><div><h4>หนังสืออนุญาตให้ใช้สถานที่</h4><p>เจ้าของหรือผู้มีสิทธิครอบครองสถานที่ยินยอมให้ใช้เป็นที่ตั้งสำนักงาน มีแบบสำหรับกรณีบุคคล หน่วยงานราชการ และบริษัทเอกชนแยกกัน</p><span class="meta">แนบหลักฐานกรรมสิทธิ์/สิทธิครอบครอง เช่น โฉนดที่ดิน สัญญาเช่า</span></div></div>
+          <div class="doc-item"><div class="stamp">7</div><div><h4>หนังสืออนุญาตให้ใช้ชื่อ</h4><p>ใช้เมื่อชื่อมูลนิธิมีชื่อบุคคลหรือหน่วยงานเป็นส่วนประกอบ ต้องได้รับความยินยอมจากเจ้าของชื่อ</p></div></div>
+          <div class="doc-item"><div class="stamp">8</div><div><h4>แผนผังที่ตั้งสำนักงาน</h4><p>แผนผังโดยสังเขปแสดงที่ตั้งสำนักงานใหญ่และสาขา (ถ้ามี)</p></div></div>
+          <div class="doc-item"><div class="stamp">9</div><div><h4>รายงานการประชุมจัดตั้ง</h4><p>บันทึกมติรับรองข้อบังคับ แต่งตั้งกรรมการชุดแรก และมอบหมายผู้ยื่นคำขอ</p></div></div>
+          <div class="doc-item"><div class="stamp">10</div><div><h4>สำเนาบัตรประชาชน/ทะเบียนบ้าน</h4><p>ของผู้ยื่นคำขอและผู้ที่เกี่ยวข้องตามที่ระบุในคำขอ พร้อมรับรองสำเนาถูกต้อง</p></div></div>
+          <div class="doc-item"><div class="stamp">11</div><div><h4>สำเนาพินัยกรรม (ถ้ามี)</h4><p>กรณีทรัพย์สินสำหรับจัดตั้งมูลนิธิเกิดขึ้นจากผลของพินัยกรรม</p></div></div>
+        </div>
+      </details>
+
+      <details class="doc-group">
+        <summary>ข. เอกสารระหว่างดำเนินกิจการ (ทุกปี)<span class="count">4 รายการ</span></summary>
+        <div class="doc-body">
+          <div class="doc-item"><div class="stamp">1</div><div><h4>แบบรายงานการดำเนินกิจการประจำปี</h4><p>สรุปกรรมการ วัตถุประสงค์ กิจกรรม/โครงการ การใช้จ่ายเงิน รายรับ และทรัพย์สินต้นปี-ปลายปี ยื่นต่อนายทะเบียนทุกปี</p></div></div>
+          <div class="doc-item"><div class="stamp">2</div><div><h4>รายงานการประชุมคณะกรรมการ/ที่ประชุมใหญ่</h4><p>บันทึกทุกมติสำคัญตลอดปี รวมถึงการอนุมัติงบการเงิน</p></div></div>
+          <div class="doc-item"><div class="stamp">3</div><div><h4>งบการเงินประจำปี + รายงานผู้สอบบัญชี</h4><p>แสดงฐานะการเงินและผลการดำเนินงาน ผ่านการตรวจสอบโดยผู้สอบบัญชี</p></div></div>
+          <div class="doc-item"><div class="stamp">4</div><div><h4>Statement ธนาคารทุกบัญชี</h4><p>ใช้กระทบยอดกับบัญชีที่บันทึกไว้ ครบทุกบัญชีในนามมูลนิธิ</p></div></div>
+        </div>
+      </details>
+
+      <details class="doc-group">
+        <summary>ค. เอกสารเมื่อมีการเปลี่ยนแปลง<span class="count">6 รายการ</span></summary>
+        <div class="doc-body">
+          <div class="doc-item"><div class="stamp">1</div><div><h4>คำขอจดทะเบียนแต่งตั้ง/เปลี่ยนแปลงกรรมการ หรือแก้ไขข้อบังคับ</h4><p>ใช้แบบเดียวกันสำหรับทั้งการเปลี่ยนกรรมการทั้งชุด เปลี่ยนบางส่วน หรือแก้ไขข้อบังคับ</p></div></div>
+          <div class="doc-item"><div class="stamp">2</div><div><h4>ตารางเปรียบเทียบข้อบังคับฉบับเก่า-ใหม่</h4><p>จำเป็นเมื่อขอแก้ไขข้อบังคับ แสดงข้อความเดิมคู่กับข้อความที่แก้ไขเป็นรายข้อ</p></div></div>
+          <div class="doc-item"><div class="stamp">3</div><div><h4>ข้อบังคับที่ขอจดทะเบียนเปลี่ยนแปลง</h4><p>ระบุข้อที่แก้ไขและข้อความใหม่ที่จะใช้แทน พร้อมลงนามโดยประธานกรรมการ</p></div></div>
+          <div class="doc-item"><div class="stamp">4</div><div><h4>บัญชีรายชื่อกรรมการชุดใหม่</h4><p>ระบุผู้ที่ได้รับแต่งตั้งแทนกรรมการเดิม และหมายเหตุกรณีแทนตำแหน่งที่ยังไม่ครบวาระ</p></div></div>
+          <div class="doc-item"><div class="stamp">5</div><div><h4>รายงานการประชุมที่มีมติเปลี่ยนแปลง</h4><p>บันทึกมติที่เกี่ยวข้องกับการเปลี่ยนกรรมการหรือแก้ไขข้อบังคับโดยเฉพาะ</p></div></div>
+          <div class="doc-item"><div class="stamp">6</div><div><h4>หนังสือมอบอำนาจ (ถ้ามี)</h4><p>ใช้เมื่อมอบหมายให้ผู้อื่นยื่นเอกสารแทน ต้องติดอากรแสตมป์ 10 บาท และแนบสำเนาบัตรผู้มอบอำนาจ</p></div></div>
+        </div>
+      </details>
+
+      <details class="doc-group">
+        <summary>ง. เอกสารเมื่อเลิกมูลนิธิ<span class="count">4 รายการ</span></summary>
+        <div class="doc-body">
+          <div class="doc-item"><div class="stamp">1</div><div><h4>แบบแจ้งการเลิกมูลนิธิ</h4><p>แจ้งเหตุผลการเลิก พร้อมแนบใบสำคัญจดทะเบียนจัดตั้ง ข้อบังคับ และเอกสารแต่งตั้งกรรมการชุดปัจจุบัน</p></div></div>
+          <div class="doc-item"><div class="stamp">2</div><div><h4>เอกสารแต่งตั้งผู้ชำระบัญชี</h4><p>ระบุผู้รับผิดชอบดำเนินการชำระบัญชีจนเสร็จสิ้น</p></div></div>
+          <div class="doc-item"><div class="stamp">3</div><div><h4>สำเนารายงานการประชุมที่มีมติให้เลิก</h4><p>หลักฐานว่าที่ประชุมมีมติให้เลิกมูลนิธิโดยถูกต้องตามข้อบังคับ</p></div></div>
+          <div class="doc-item"><div class="stamp">4</div><div><h4>แบบรายงานการชำระบัญชี</h4><p>สรุปการโฆษณา การแจ้งเจ้าหนี้ งบดุล บัญชีทรัพย์สิน-หนี้สิน การจำหน่ายทรัพย์สิน และการชำระหนี้ทั้งหมด</p></div></div>
+        </div>
+      </details>
+
+      <details class="doc-group">
+        <summary>จ. เอกสารอ้างอิง (สำหรับตรวจสอบเจ้าหน้าที่)<span class="count">2 รายการ</span></summary>
+        <div class="doc-body">
+          <div class="doc-item"><div class="stamp">i</div><div><h4>แบบบัตรประจำตัวนายทะเบียน</h4><p>บัตรที่ออกให้รัฐมนตรีว่าการกระทรวงมหาดไทยหรือผู้ได้รับมอบหมายในฐานะนายทะเบียน ใช้แสดงตนเมื่อปฏิบัติหน้าที่</p></div></div>
+          <div class="doc-item"><div class="stamp">ii</div><div><h4>แบบบัตรประจำตัวพนักงานเจ้าหน้าที่</h4><p>บัตรที่ออกให้เจ้าหน้าที่ผู้ปฏิบัติงานด้านทะเบียนมูลนิธิ ใช้ตรวจสอบตัวตนเมื่อผู้ยื่นคำขอติดต่อราชการ</p></div></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- ============ TAB 3: REGULATIONS ============ -->
+    <section class="panel" id="t3">
+      <p class="lede">สาระสำคัญทางกฎหมายที่เกี่ยวข้องกับมูลนิธิ ตั้งแต่กฎหมายหลัก อำนาจของนายทะเบียน ไปจนถึงเงื่อนไขที่ข้อบังคับและตัวกรรมการต้องมี</p>
+
+      <h2 class="sec">กฎหมายและผู้มีอำนาจ<span class="tag">พื้นฐาน</span></h2>
+      <div class="clause">
+        <div class="cnum">๑</div>
+        <div>
+          <h4>กฎหมายหลักที่ใช้บังคับ</h4>
+          <p>มูลนิธิอยู่ภายใต้ประมวลกฎหมายแพ่งและพาณิชย์ ว่าด้วยมูลนิธิ และกฎกระทรวงที่ออกตามความในกฎหมายดังกล่าว ซึ่งกำหนดแบบพิมพ์คำขอ วิธีจดทะเบียน และหน้าที่รายงานต่าง ๆ ไว้เป็นการเฉพาะ</p>
+        </div>
+      </div>
+      <div class="clause">
+        <div class="cnum">๒</div>
+        <div>
+          <h4>นายทะเบียนมูลนิธิ</h4>
+          <p>ผู้รับจดทะเบียนแตกต่างกันตามพื้นที่ตั้งสำนักงานใหญ่ของมูลนิธิ</p>
+          <div class="pill-row">
+            <span class="pill">กรุงเทพมหานคร — นายทะเบียนมูลนิธิกรุงเทพมหานคร (สำนักงานเขต)</span>
+            <span class="pill">ต่างจังหวัด — นายทะเบียนมูลนิธิจังหวัด (ที่ว่าการอำเภอ/จังหวัด)</span>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="sec">สาระที่ข้อบังคับต้องกำหนด<span class="tag">ข้อบังคับ</span></h2>
+      <p class="secsub">ข้อบังคับมูลนิธิควรครอบคลุมหมวดต่อไปนี้เป็นอย่างน้อย เพื่อให้ใช้บริหารองค์กรได้จริงและผ่านการพิจารณา</p>
+      <div class="clause">
+        <div class="cnum">๑</div>
+        <div><h4>ชื่อและเครื่องหมายของมูลนิธิ</h4><p>พร้อมเหตุผลหรือที่มาของชื่อ หากมีการนำชื่อบุคคล/หน่วยงานมาประกอบ</p></div>
+      </div>
+      <div class="clause">
+        <div class="cnum">๒</div>
+        <div><h4>ที่ตั้งสำนักงาน</h4><p>ทั้งสำนักงานใหญ่และสำนักงานสาขา (ถ้ามี)</p></div>
+      </div>
+      <div class="clause">
+        <div class="cnum">๓</div>
+        <div><h4>วัตถุประสงค์</h4><p>ระบุให้ชัดเจน ไม่กว้างเกินขอบเขตที่จะดำเนินการจริง</p></div>
+      </div>
+      <div class="clause">
+        <div class="cnum">๔</div>
+        <div><h4>ทุนทรัพย์และทรัพย์สิน</h4><p>ที่จัดสรรไว้เพื่อวัตถุประสงค์ของมูลนิธิ และหลักเกณฑ์การใช้จ่าย</p></div>
+      </div>
+      <div class="clause">
+        <div class="cnum">๕</div>
+        <div><h4>คุณสมบัติ จำนวน และวาระของกรรมการ</h4><p>รวมถึงเงื่อนไขการพ้นจากตำแหน่งและการแต่งตั้งซ่อม</p></div>
+      </div>
+      <div class="clause">
+        <div class="cnum">๖</div>
+        <div><h4>องค์ประชุมและมติที่ประชุม</h4><p>จำนวนกรรมการขั้นต่ำที่ต้องมาประชุม และเสียงข้างมากที่ใช้ในการลงมติ</p></div>
+      </div>
+      <div class="clause">
+        <div class="cnum">๗</div>
+        <div><h4>กำหนดการประชุมใหญ่สามัญประจำปี และอำนาจการใช้จ่ายเงิน</h4><p>เดือนที่จะประชุมใหญ่ และวงเงินที่ประธานกรรมการหรือเหรัญญิกมีอำนาจอนุมัติจ่ายได้เอง</p></div>
+      </div>
+      <div class="clause">
+        <div class="cnum">๘</div>
+        <div><h4>การแก้ไขข้อบังคับและการเลิกมูลนิธิ</h4><p>วิธีการขอแก้ไข และขั้นตอนเมื่อจะเลิกกิจการ</p></div>
+      </div>
+
+      <h2 class="sec">คุณสมบัติและข้อมูลของกรรมการ<span class="tag">แบบรับรอง</span></h2>
+      <div class="clause">
+        <div class="cnum">๑</div>
+        <div>
+          <h4>ข้อมูลที่ผู้จะเป็นกรรมการต้องเปิดเผย</h4>
+          <ul>
+            <li>สัญชาติ — กรณีเป็นคนต่างด้าวต้องแจ้งเลขหนังสือเดินทาง ใบสำคัญถิ่นที่อยู่ และใบอนุญาตทำงาน (ถ้ามี)</li>
+            <li>อาชีพ ตำแหน่ง รายได้ และสถานที่ประกอบอาชีพ</li>
+            <li>ทรัพย์สินที่ครอบครองอยู่ในปัจจุบัน</li>
+            <li>ประวัติการทำงานในองค์กรการกุศลอื่นมาก่อน (ถ้ามี)</li>
+            <li>ประวัติการต้องหาคดีอาญาหรือคดีแพ่งที่ศาลมีคำพิพากษาถึงที่สุดแล้ว</li>
+          </ul>
+        </div>
+      </div>
+      <div class="clause">
+        <div class="cnum">๒</div>
+        <div>
+          <h4>จำนวนและวาระกรรมการ (ตัวอย่างที่พบในทางปฏิบัติ)</h4>
+          <p>ข้อบังคับส่วนใหญ่กำหนดจำนวนกรรมการไม่น้อยกว่า 3 คน แต่ไม่เกิน 15 คน วาระการดำรงตำแหน่งครั้งละ 2–3 ปี และมักห้ามดำรงตำแหน่งเดิมติดต่อกันเกิน 1 วาระ เว้นแต่ตำแหน่งที่ข้อบังคับยกเว้นไว้เป็นการเฉพาะ — ตัวเลขจริงต้องกำหนดไว้ในข้อบังคับของแต่ละมูลนิธิเอง</p>
+        </div>
+      </div>
+
+      <h2 class="sec">ข้อกำหนดปลีกย่อยที่มักถูกมองข้าม<span class="tag">ปฏิบัติ</span></h2>
+      <div class="clause">
+        <div class="cnum">๑</div>
+        <div><h4>การมอบอำนาจให้ผู้อื่นยื่นเอกสารแทน</h4><p>ต้องทำเป็นหนังสือมอบอำนาจ ติดอากรแสตมป์ 10 บาท และแนบสำเนาบัตรประชาชนของผู้มอบอำนาจ</p></div>
+      </div>
+      <div class="clause">
+        <div class="cnum">๒</div>
+        <div><h4>การแก้ไขข้อบังคับมีผลเมื่อจดทะเบียนแล้วเท่านั้น</h4><p>การแก้ไขข้อบังคับต้องยื่นขอจดทะเบียนเปลี่ยนแปลงต่อนายทะเบียนก่อน จึงจะมีผลใช้บังคับ พร้อมแนบตารางเปรียบเทียบฉบับเก่ากับฉบับใหม่</p></div>
+      </div>
+      <div class="clause">
+        <div class="cnum">๓</div>
+        <div><h4>มาตรฐานบัตรประจำตัวเจ้าหน้าที่/นายทะเบียน</h4><p>กำหนดขนาดบัตร 5.4 × 8.4 ซม. รูปถ่ายขนาด 2.5 × 3 ซม. และตราประทับในวงกลมเส้นผ่านศูนย์กลาง 3.5 ซม. ด้วยหมึกสีแดง — เป็นข้อมูลไว้ตรวจสอบตัวตนของผู้ปฏิบัติหน้าที่ราชการที่มาติดต่อ</p></div>
+      </div>
+    </section>
+
+    <!-- ============ TAB 4: AUDIT ============ -->
+    <section class="panel" id="t4">
+      <p class="lede">มูลนิธิมีหน้าที่รายงานทั้งต่อนายทะเบียนและต้องผ่านการตรวจสอบบัญชีทุกปี — ลำดับขั้นตอนปิดงบ เอกสารที่ต้องเตรียม และข้อควรระวังที่พบบ่อย</p>
+
+      <h2 class="sec">หน้าที่รายงานประจำปี<span class="tag">ต่อนายทะเบียน</span></h2>
+      <p class="secsub">ทุกปีมูลนิธิต้องยื่นแบบรายงานการดำเนินกิจการ ซึ่งต้องมีข้อมูลอย่างน้อยดังนี้</p>
+      <ul class="checklist">
+        <li>รายชื่อและตำแหน่งคณะกรรมการมูลนิธิ</li>
+        <li>วัตถุประสงค์ของมูลนิธิ</li>
+        <li>กิจกรรม/โครงการที่ดำเนินการตามวัตถุประสงค์</li>
+        <li>การใช้จ่ายเงินแยกตามกิจกรรมและค่าใช้จ่ายสำนักงาน</li>
+        <li>รายรับ แยกตามแหล่งที่มา (ดอกเบี้ย กิจกรรม เงินบริจาค รายได้อื่น)</li>
+        <li>ทรัพย์สินของมูลนิธิ ณ วันเริ่มจดทะเบียน และ ณ วันรายงาน</li>
+        <li>การดำรงตำแหน่งและการครบวาระของกรรมการ</li>
+        <li>กิจการอื่นที่ต้องรายงานหรือข้อเสนอแนะ</li>
+      </ul>
+
+      <h2 class="sec">ขั้นตอนปิดงบการเงินประจำปี<span class="tag">บัญชี</span></h2>
+      <div class="flow">
+        <div class="flow-step"><div class="fdot"></div><div><h4>ตรวจสถานะองค์กรและรอบปีบัญชี</h4><p>ตรวจชื่อ เลขทะเบียน ที่ตั้ง รายชื่อกรรมการชุดปัจจุบัน ข้อบังคับ และสถานะบัญชีธนาคารให้ตรงกับความเป็นจริงก่อนเริ่มทำบัญชี</p></div></div>
+        <div class="flow-step"><div class="fdot"></div><div><h4>รวบรวมเอกสารรายรับ</h4><p>แยกประเภทให้ชัด เช่น เงินบริจาคทั่วไป เงินบริจาคเฉพาะโครงการ เงินสนับสนุน และดอกเบี้ยรับจากธนาคาร</p></div></div>
+        <div class="flow-step"><div class="fdot"></div><div><h4>รวบรวมเอกสารรายจ่าย</h4><p>ทุกรายจ่ายควรมีเอกสารประกอบ เช่น ใบเสร็จ ใบสำคัญจ่าย ใบอนุมัติค่าใช้จ่าย และหลักฐานการโอนเงิน</p></div></div>
+        <div class="flow-step"><div class="fdot"></div><div><h4>กระทบยอดบัญชีธนาคาร</h4><p>ตรวจ Statement ทุกบัญชีว่าตรงกับรายการที่บันทึกไว้ รวมถึงบัญชีที่ไม่ค่อยเคลื่อนไหว</p></div></div>
+        <div class="flow-step"><div class="fdot"></div><div><h4>บันทึกบัญชีรายรับ-รายจ่าย</h4><p>แยกประเภทรายรับ รายจ่าย สินทรัพย์ หนี้สิน และเงินคงเหลือ ไม่รวมรายการต่างประเภทไว้ด้วยกัน</p></div></div>
+        <div class="flow-step"><div class="fdot"></div><div><h4>ปรับปรุงรายการสิ้นปี</h4><p>เช่น ดอกเบี้ยค้างรับ ค่าใช้จ่ายค้างจ่าย ค่าเสื่อมราคาทรัพย์สิน และเงินที่มีวัตถุประสงค์เฉพาะ</p></div></div>
+        <div class="flow-step"><div class="fdot"></div><div><h4>จัดทำงบการเงินประจำปี</h4><p>แสดงเงินสด เงินฝากธนาคาร ทรัพย์สิน หนี้สิน รายรับ รายจ่าย และเงินคงเหลือ ให้ตรวจสอบย้อนกลับไปยังเอกสารต้นทางได้</p></div></div>
+        <div class="flow-step"><div class="fdot"></div><div><h4>ส่งผู้สอบบัญชีตรวจสอบ</h4><p>ผู้สอบบัญชีจะตรวจตัวเลข เอกสารประกอบ รายการธนาคาร และความสมเหตุสมผลของรายการสำคัญ</p></div></div>
+        <div class="flow-step"><div class="fdot"></div><div><h4>เสนอคณะกรรมการรับทราบ/อนุมัติ</h4><p>บันทึกไว้ในรายงานการประชุมเป็นหลักฐาน ตามอำนาจที่ข้อบังคับกำหนด</p></div></div>
+        <div class="flow-step"><div class="fdot"></div><div><h4>จัดเก็บเอกสารเป็นแฟ้มรายปี</h4><p>แยกแฟ้มรายรับ รายจ่าย ธนาคาร ภาษี ประชุม และงบการเงิน เพื่อให้ปีถัดไปทำงานง่ายและตรวจสอบย้อนหลังได้</p></div></div>
+      </div>
+
+      <h2 class="sec">เช็กลิสต์เอกสารก่อนส่งผู้สอบบัญชี<span class="tag">Checklist</span></h2>
+      <ul class="checklist">
+        <li>Statement ธนาคารครบทุกบัญชี</li>
+        <li>งบการเงินปีก่อน</li>
+        <li>รายงานผู้สอบบัญชีปีก่อน</li>
+        <li>เอกสารทะเบียนมูลนิธิครบถ้วน</li>
+        <li>รายชื่อกรรมการปัจจุบันถูกต้อง</li>
+        <li>ใบอนุโมทนาและรายชื่อผู้บริจาค</li>
+        <li>ใบเสร็จหรือเอกสารรายจ่ายครบ</li>
+        <li>เอกสารโครงการหรือรายงานกิจกรรม</li>
+        <li>เอกสารภาษีหัก ณ ที่จ่าย (ถ้ามี)</li>
+        <li>รายการทรัพย์สินและค่าเสื่อมราคา</li>
+        <li>รายงานการประชุมที่เกี่ยวข้องกับการอนุมัติงบ</li>
+        <li>รายการเงินโอนที่ยังไม่ทราบที่มา (ถ้ามี ต้องหาคำอธิบาย)</li>
+      </ul>
+
+      <h2 class="sec">ข้อควรระวังในการปิดงบ<span class="tag">สำคัญ</span></h2>
+      <div class="warn"><strong>เงินบริจาคต้องมีหลักฐานชัดเจน</strong> — ระบุว่าได้รับจากใคร เมื่อไหร่ จำนวนเท่าไร และนำเข้าบัญชีใด ยอดตามใบอนุโมทนาต้องสัมพันธ์กับยอดเงินเข้าธนาคาร</div>
+      <div class="warn"><strong>รายจ่ายต้องตรงกับวัตถุประสงค์ของมูลนิธิ</strong> — ค่าใช้จ่ายส่วนตัวของกรรมการหรือรายการที่ไม่มีเอกสารประกอบจะถูกตั้งข้อสังเกตจากผู้สอบบัญชี</div>
+      <div class="warn"><strong>Statement ต้องครบทุกบัญชี</strong> — รวมบัญชีที่ไม่ค่อยเคลื่อนไหว เพราะอาจมีดอกเบี้ยหรือยอดคงเหลือที่ต้องบันทึกในงบ</div>
+      <div class="warn"><strong>กรรมการต้องรับทราบและอนุมัติงบ</strong> — งบการเงินไม่ใช่เรื่องของฝ่ายบัญชีเพียงฝ่ายเดียว กรรมการมีบทบาทต่อความโปร่งใสของมูลนิธิ</div>
+      <div class="warn"><strong>อย่าปล่อยให้ค้างปิดงบหลายปี</strong> — หากค้างหลายปี ต้องเริ่มตรวจจากปีแรกที่ค้างก่อน เพราะยอดยกมาของปีแรกกระทบตัวเลขของปีถัดไปทั้งหมด</div>
+
+      <h2 class="sec">การชำระบัญชีเมื่อเลิกมูลนิธิ<span class="tag">กรณีเลิกกิจการ</span></h2>
+      <div class="flow">
+        <div class="flow-step"><div class="fdot"></div><div><h4>โฆษณาการเลิกมูลนิธิ</h4><p>ลงประกาศในหนังสือพิมพ์ตามที่กฎหมายกำหนด</p></div></div>
+        <div class="flow-step"><div class="fdot"></div><div><h4>แจ้งเจ้าหนี้เป็นหนังสือ</h4><p>เพื่อให้เจ้าหนี้มายื่นทวงหนี้ภายในกำหนด</p></div></div>
+        <div class="flow-step"><div class="fdot"></div><div><h4>จัดทำงบดุล ณ วันเลิก</h4><p>พร้อมบัญชีรายละเอียดสินทรัพย์และหนี้สิน ผ่านการตรวจสอบโดยผู้สอบบัญชี</p></div></div>
+        <div class="flow-step"><div class="fdot"></div><div><h4>จำหน่ายทรัพย์สินและชำระหนี้</h4><p>ชำระหนี้แก่เจ้าหนี้ เรียกเก็บจากลูกหนี้ และบันทึกกรณีเจ้าหนี้ไม่พบตัว</p></div></div>
+        <div class="flow-step"><div class="fdot"></div><div><h4>รายงานผลการชำระบัญชีต่อนายทะเบียน</h4><p>แนบเอกสารประกอบทั้งหมดท้ายรายงาน — เมื่อนายทะเบียนรับทราบ มูลนิธิจึงสิ้นสภาพนิติบุคคล</p></div></div>
+      </div>
+    </section>
+
+    <!-- ============ TAB 5: WRITING GUIDE ============ -->
+    <section class="panel" id="t5">
+      <p class="lede">แนวทางเขียนเอกสารสำคัญแต่ละฉบับ พร้อมโครงร่างที่ควรมีในแต่ละหัวข้อ เพื่อลดโอกาสถูกขอแก้ไขเมื่อยื่นจริง</p>
+
+      <div class="guide-card">
+        <div class="gc-head"><span class="gnum">๑</span> การเขียนวัตถุประสงค์ของมูลนิธิ</div>
+        <div class="gc-body">
+          <p>เขียนให้ชัดเจน จับต้องได้ และตรงกับกิจกรรมที่จะทำจริง หลีกเลี่ยงถ้อยคำกว้างจนตีความได้หลายทาง</p>
+          <ul>
+            <li>ระบุกลุ่มเป้าหมายหรือประเด็นให้ชัด เช่น เด็กกำพร้า ผู้ป่วยยากไร้ นักเรียนขาดแคลนทุนทรัพย์</li>
+            <li>ใช้คำที่สื่อการกระทำ เช่น ส่งเสริม สนับสนุน สงเคราะห์ ทำนุบำรุง อนุรักษ์</li>
+            <li>หากมีหลายวัตถุประสงค์ ให้แยกเป็นข้อย่อยแทนการเขียนรวมเป็นประโยคเดียว</li>
+          </ul>
+          <div class="sample">
+            <span class="lbl">ตัวอย่างเปรียบเทียบ</span>
+            กว้างเกินไป: “เพื่อช่วยเหลือสังคมในทุกด้าน” <br>
+            ชัดเจนขึ้น: “เพื่อมอบทุนการศึกษาแก่เด็กนักเรียนที่ขาดแคลนทุนทรัพย์ในระดับประถมศึกษา”
+          </div>
+        </div>
+      </div>
+
+      <div class="guide-card">
+        <div class="gc-head"><span class="gnum">๒</span> การเขียนข้อบังคับมูลนิธิ</div>
+        <div class="gc-body">
+          <p>จัดโครงเป็นหมวดตามลำดับ ให้ตรวจสอบง่ายและครบตามที่กฎหมายกำหนด (ดูรายละเอียดหมวดในแท็บ “ระเบียบข้อบังคับ”)</p>
+          <ul>
+            <li>เขียนแต่ละหมวดเป็นข้อ ๆ ไม่ต้องยาว แต่ต้องครบใจความ</li>
+            <li>ระบุจำนวนกรรมการเป็นช่วง เช่น “ไม่น้อยกว่า...คน แต่ไม่เกิน...คน” เพื่อความยืดหยุ่น</li>
+            <li>กำหนดวาระกรรมการและเงื่อนไขการต่อวาระให้ชัด เพื่อป้องกันข้อโต้แย้งภายหลัง</li>
+            <li>ระบุวงเงินที่ประธานกรรมการ/เหรัญญิกอนุมัติจ่ายได้เองอย่างชัดเจน</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="guide-card">
+        <div class="gc-head"><span class="gnum">๓</span> การเขียนรายงานการประชุมจัดตั้ง</div>
+        <div class="gc-body">
+          <p>ใช้โครงสร้าง 7 ส่วนตามแบบฟอร์มมาตรฐาน</p>
+          <ul>
+            <li>ระบุครั้งที่และปีที่ประชุม (เช่น ครั้งที่ 1/2568)</li>
+            <li>ระบุวัน เดือน ปี ที่ประชุม</li>
+            <li>ระบุสถานที่ประชุม</li>
+            <li>ระบุชื่อ-สกุลผู้มาประชุมทุกคน</li>
+            <li>บันทึกวาระ 3 เรื่องหลัก: รับรองข้อบังคับ, แต่งตั้งผู้ยื่นคำร้อง, แต่งตั้งคณะกรรมการบริหารชุดแรก — พร้อมมติที่ประชุมของแต่ละเรื่อง</li>
+            <li>ให้เลขานุการหรือผู้ได้รับมอบหมายลงชื่อเป็นผู้จดรายงาน</li>
+            <li>ให้ประธานกรรมการหรือผู้ทำหน้าที่ประธานลงชื่อเป็นผู้ตรวจรายงาน</li>
+          </ul>
+          <div class="sample">
+            <span class="lbl">ตัวอย่างมติ</span>
+            “ที่ประชุมพิจารณาแล้วลงมติเป็นเอกฉันท์ให้ใช้ข้อบังคับฉบับนี้ยื่นต่อทางราชการได้”
+          </div>
+        </div>
+      </div>
+
+      <div class="guide-card">
+        <div class="gc-head"><span class="gnum">๔</span> การเขียนคำขอจดทะเบียนจัดตั้ง</div>
+        <div class="gc-body">
+          <p>ระบุข้อมูลผู้ยื่นคำขอให้ตรงกับบัตรประชาชน และตรวจให้ที่ตั้งสำนักงานตรงกับที่ระบุในข้อบังคับและหนังสืออนุญาตใช้สถานที่</p>
+          <ul>
+            <li>เขียนชื่อมูลนิธิให้ตรงกับข้อบังคับทุกตัวอักษร</li>
+            <li>ระบุที่ตั้งสำนักงานใหญ่และสาขาแยกกันให้ชัด</li>
+            <li>ทำเครื่องหมายในรายการเอกสารแนบให้ตรงกับที่แนบจริง อย่าติ๊กเกินหรือขาด</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="guide-card">
+        <div class="gc-head"><span class="gnum">๕</span> การเขียนหนังสือคำมั่นสัญญา</div>
+        <div class="gc-body">
+          <p>ระบุตัวผู้ให้คำมั่นและทรัพย์สิน/จำนวนเงินที่จะมอบให้ชัดเจน พร้อมเงื่อนไขเวลา</p>
+          <ul>
+            <li>ระบุจำนวนเงินหรือทรัพย์สินทั้งตัวเลขและตัวอักษร</li>
+            <li>ระบุเงื่อนไขเวลาที่จะมอบ (โดยทั่วไปภายใน 30 วันหลังจดทะเบียนจัดตั้งสำเร็จ)</li>
+            <li>ลงชื่อผู้ให้คำมั่น ผู้รับคำมั่น และพยาน 2 คน พร้อมแนบหนังสือรับรองบัญชีเงินฝากจากธนาคาร</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="guide-card">
+        <div class="gc-head"><span class="gnum">๖</span> การเขียนหนังสืออนุญาตให้ใช้สถานที่ / ใช้ชื่อ</div>
+        <div class="gc-body">
+          <p>ระบุตัวผู้อนุญาตให้ตรงกับหลักฐานกรรมสิทธิ์ และระบุขอบเขตการอนุญาตให้ชัดเจน</p>
+          <ul>
+            <li>กรณีบุคคล: ระบุชื่อ ที่อยู่ และแนบหลักฐานกรรมสิทธิ์หรือสิทธิครอบครอง</li>
+            <li>กรณีหน่วยงาน/บริษัท: ผู้ลงนามต้องเป็นผู้บังคับบัญชาสูงสุดหรือผู้ได้รับมอบหมายให้ลงนามแทน</li>
+            <li>ระบุวันเริ่มต้นการอนุญาต และแนบแผนที่ตั้งประกอบ</li>
+            <li>ลงชื่อผู้อนุญาตและพยาน 2 คนเสมอ</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="guide-card">
+        <div class="gc-head"><span class="gnum">๗</span> การเขียนรายงานกิจการประจำปี</div>
+        <div class="gc-body">
+          <p>เรียงตามโครงสร้าง 9 หัวข้อของแบบฟอร์มราชการ เพื่อให้ตรวจสอบง่ายและครบถ้วน</p>
+          <ul>
+            <li>คณะกรรมการของมูลนิธิ (พร้อมตำแหน่ง)</li>
+            <li>วัตถุประสงค์ของมูลนิธิ</li>
+            <li>กิจกรรม/โครงการที่ดำเนินการ</li>
+            <li>การใช้จ่ายเงินของมูลนิธิ</li>
+            <li>รายรับของมูลนิธิ (แยกประเภท)</li>
+            <li>แหล่งที่มาของรายรับ</li>
+            <li>ทรัพย์สินของมูลนิธิ (ต้นปีและปลายปี)</li>
+            <li>การดำรงตำแหน่งของคณะกรรมการ</li>
+            <li>กิจการอื่นที่ต้องรายงานหรือข้อเสนอแนะ</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<footer class="note">
+  เอกสารนี้เรียบเรียงเพื่อใช้เป็นแนวทางเบื้องต้นเท่านั้น รายละเอียดเอกสารและขั้นตอนอาจแตกต่างกันไปตามพื้นที่และดุลยพินิจของนายทะเบียนแต่ละแห่ง ควรตรวจสอบกับหน่วยงานที่รับจดทะเบียนก่อนยื่นเอกสารจริงทุกครั้ง
+</footer>
+
+<script>
+  const tabs = document.querySelectorAll('.tabbtn');
+  const panels = document.querySelectorAll('.panel');
+  tabs.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      tabs.forEach(b=>b.setAttribute('aria-selected','false'));
+      panels.forEach(p=>p.classList.remove('active'));
+      btn.setAttribute('aria-selected','true');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+      document.querySelector('.wrap').scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+</script>
+
+</body>
+</html>
