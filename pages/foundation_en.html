@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guide to Establishing and Running a Thai Foundation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Noto+Serif+Thai:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c2431;
+    --ink-soft:#38425a;
+    --paper:#f6f1e6;
+    --paper-raised:#fffcf5;
+    --paper-deep:#efe8d8;
+    --seal:#a2402c;
+    --seal-soft:#c96a4f;
+    --gold:#9c7a2e;
+    --gold-soft:#c7a75f;
+    --line:#ddd0ac;
+    --muted:#6b6455;
+    --shadow: 0 18px 40px -20px rgba(28,36,49,.35);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1200px 500px at 15% -10%, #fffef9 0%, transparent 60%),
+      var(--paper);
+    color:var(--ink);
+    font-family:'Sarabun', sans-serif;
+    font-size:16px;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px 90px;}
+
+  .cover{
+    position:relative;
+    padding:56px 20px 44px;
+    border-bottom:1px solid var(--line);
+    margin-bottom:34px;
+    overflow:hidden;
+  }
+  .cover::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      repeating-linear-gradient(90deg, rgba(156,122,46,.06) 0 1px, transparent 1px 90px);
+    pointer-events:none;
+  }
+  .cover-inner{
+    max-width:1040px;margin:0 auto;
+    display:flex; align-items:center; gap:34px; flex-wrap:wrap;
+    position:relative;
+  }
+  .seal{
+    flex:0 0 auto;
+    width:96px;height:96px;
+    border-radius:50%;
+    border:2.5px solid var(--seal);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+    color:var(--seal);
+  }
+  .seal::before{
+    content:"";
+    position:absolute; inset:8px;
+    border:1px solid var(--seal);
+    border-radius:50%;
+  }
+  .seal span{
+    font-family:'Noto Serif Thai', serif;
+    font-weight:700;
+    font-size:12.5px;
+    letter-spacing:.5px;
+    text-align:center;
+    line-height:1.2;
+  }
+  .cover h1{
+    font-family:'Noto Serif Thai', serif;
+    font-weight:700;
+    font-size:clamp(26px, 3.6vw, 40px);
+    margin:0 0 10px;
+    color:var(--ink);
+  }
+  .cover p{
+    margin:0; color:var(--ink-soft); max-width:64ch; font-size:16.5px;
+  }
+  .cover .ref{
+    margin-top:14px; font-size:13.5px; color:var(--muted);
+    border-top:1px dashed var(--line); padding-top:12px; max-width:64ch;
+  }
+
+  .tabbar{
+    display:flex; gap:4px; flex-wrap:wrap;
+    border-bottom:2px solid var(--ink);
+    margin-bottom:0;
+    padding:0 4px;
+  }
+  .tabbtn{
+    font-family:'Sarabun',sans-serif;
+    font-size:15px;
+    font-weight:600;
+    color:var(--ink-soft);
+    background:var(--paper-deep);
+    border:1px solid var(--line);
+    border-bottom:none;
+    border-radius:8px 8px 0 0;
+    padding:13px 20px 12px;
+    cursor:pointer;
+    position:relative;
+    top:2px;
+    transition:background .15s ease, color .15s ease, top .15s ease;
+  }
+  .tabbtn .num{
+    display:inline-block;
+    font-family:'Noto Serif Thai',serif;
+    color:var(--gold);
+    margin-inline-end:8px;
+    font-weight:700;
+  }
+  .tabbtn:hover{ background:var(--paper-raised); color:var(--ink); }
+  .tabbtn[aria-selected="true"]{
+    background:var(--paper-raised);
+    color:var(--ink);
+    border-color:var(--ink);
+    border-bottom:2px solid var(--paper-raised);
+    top:2px;
+    box-shadow: 0 -6px 14px -10px rgba(28,36,49,.25);
+  }
+  .tabbtn[aria-selected="true"] .num{ color:var(--seal); }
+
+  .panelhost{
+    background:var(--paper-raised);
+    border:1px solid var(--ink);
+    border-top:none;
+    border-radius:0 0 10px 10px;
+    box-shadow:var(--shadow);
+    padding:38px clamp(20px,4vw,52px) 46px;
+  }
+  .panel{ display:none; animation:fade .25s ease; }
+  .panel.active{ display:block; }
+  @keyframes fade{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;} }
+
+  .panel > .lede{
+    font-size:16.5px; color:var(--ink-soft); max-width:74ch;
+    margin:0 0 30px; padding-bottom:22px; border-bottom:1px dashed var(--line);
+  }
+
+  h2.sec{
+    font-family:'Noto Serif Thai', serif;
+    font-size:22px; font-weight:700;
+    color:var(--ink);
+    margin:40px 0 6px;
+    display:flex; align-items:baseline; gap:10px;
+  }
+  h2.sec:first-of-type{margin-top:0;}
+  h2.sec .tag{
+    font-family:'Sarabun',sans-serif;
+    font-size:12.5px; font-weight:600; color:var(--seal);
+    border:1px solid var(--seal-soft);
+    border-radius:999px; padding:2px 10px;
+    white-space:nowrap;
+  }
+  .secsub{ color:var(--muted); font-size:14.5px; margin:0 0 20px; }
+
+  .phase{ margin-bottom:8px; }
+  .phase-head{
+    display:flex; align-items:center; gap:12px;
+    margin:38px 0 18px;
+  }
+  .phase-head .ph-mark{
+    width:34px;height:34px;flex:0 0 auto;
+    border-radius:50%;
+    border:1.5px solid var(--gold);
+    color:var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Noto Serif Thai',serif; font-weight:700; font-size:15px;
+  }
+  .phase-head h3{
+    font-family:'Noto Serif Thai',serif;
+    font-size:19px; margin:0; color:var(--ink); font-weight:600;
+  }
+  .timeline{
+    position:relative;
+    margin:0 0 0 17px;
+    padding-left:34px;
+    border-left:2px solid var(--line);
+  }
+  .step{
+    position:relative;
+    padding:0 0 26px 0;
+  }
+  .step:last-child{padding-bottom:4px;}
+  .step::before{
+    content: attr(data-n);
+    position:absolute;
+    left:-45px; top:0;
+    width:26px;height:26px;
+    background:var(--paper-raised);
+    border:2px solid var(--ink);
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px; font-weight:700; color:var(--ink);
+    font-family:'Sarabun',sans-serif;
+  }
+  .step h4{
+    margin:0 0 5px; font-size:16.5px; font-weight:600; color:var(--ink);
+  }
+  .step p{ margin:0; color:var(--ink-soft); font-size:15px; }
+  .step .doclink{
+    display:inline-block; margin-top:8px;
+    font-size:13px; color:var(--seal);
+    background:#f4e6de; border:1px solid #e3c3b3;
+    padding:2px 10px; border-radius:6px;
+  }
+
+  .doc-group{ margin-bottom:14px; }
+  .doc-group summary{
+    cursor:pointer;
+    list-style:none;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:16px 20px;
+    background:var(--paper-deep);
+    border:1px solid var(--line);
+    border-radius:8px;
+    font-weight:600; font-size:16px; color:var(--ink);
+  }
+  .doc-group summary::-webkit-details-marker{ display:none; }
+  .doc-group summary::after{
+    content:"+";
+    font-size:20px; color:var(--gold); font-weight:400;
+    transition:transform .15s ease;
+  }
+  .doc-group[open] summary::after{ content:"–"; }
+  .doc-group summary .count{
+    font-size:12.5px; color:var(--muted); font-weight:500;
+  }
+  .doc-body{
+    border:1px solid var(--line); border-top:none;
+    border-radius:0 0 8px 8px;
+    padding:6px 22px 14px;
+  }
+  .doc-item{
+    display:flex; gap:14px; align-items:flex-start;
+    padding:14px 0; border-top:1px dashed var(--line);
+  }
+  .doc-item:first-child{ border-top:none; }
+  .doc-item .stamp{
+    flex:0 0 auto; width:30px;height:30px; margin-top:2px;
+    border:1.5px solid var(--gold-soft); border-radius:6px;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--gold); font-size:13px; font-weight:700; font-family:'Noto Serif Thai',serif;
+  }
+  .doc-item h4{ margin:0 0 4px; font-size:15.5px; font-weight:600; }
+  .doc-item p{ margin:0; font-size:14.5px; color:var(--ink-soft); }
+  .doc-item .meta{
+    display:inline-block; margin-top:6px; font-size:12.5px; color:var(--muted);
+  }
+
+  .clause{
+    display:grid; grid-template-columns:64px 1fr; gap:18px;
+    padding:20px 0; border-top:1px dashed var(--line);
+  }
+  .clause:first-child{border-top:none;}
+  .clause .cnum{
+    font-family:'Noto Serif Thai',serif; font-weight:700; font-size:15px;
+    color:var(--seal); padding-top:2px;
+  }
+  .clause h4{ margin:0 0 6px; font-size:16.5px; font-weight:600; }
+  .clause p{ margin:0 0 8px; color:var(--ink-soft); font-size:15px; }
+  .clause ul{ margin:8px 0 0; padding-left:20px; color:var(--ink-soft); font-size:14.5px; }
+  .clause li{ margin-bottom:5px; }
+  .pill-row{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+  .pill{
+    font-size:13px; background:var(--paper-deep); border:1px solid var(--line);
+    padding:4px 11px; border-radius:999px; color:var(--ink-soft);
+  }
+
+  .flow{
+    display:flex; flex-direction:column; gap:0;
+    margin:6px 0 10px;
+  }
+  .flow-step{
+    display:grid; grid-template-columns:30px 1fr; gap:16px;
+    padding:16px 0;
+    border-top:1px dashed var(--line);
+  }
+  .flow-step:first-child{border-top:none;}
+  .flow-step .fdot{
+    width:14px;height:14px;border-radius:50%;
+    background:var(--paper-raised); border:2px solid var(--seal);
+    margin-top:5px;
+  }
+  .flow-step h4{ margin:0 0 4px; font-size:15.5px; font-weight:600; }
+  .flow-step p{ margin:0; font-size:14.5px; color:var(--ink-soft); }
+
+  .checklist{
+    columns:2; column-gap:28px;
+    list-style:none; margin:0; padding:0;
+    font-size:14.5px; color:var(--ink-soft);
+  }
+  .checklist li{
+    break-inside:avoid; display:flex; gap:9px; padding:7px 0;
+    border-top:1px dotted var(--line);
+  }
+  .checklist li:nth-child(1),.checklist li:nth-child(2){border-top:none;}
+  .checklist li::before{
+    content:"☐"; color:var(--gold); font-size:15px; line-height:1.4;
+  }
+  @media (max-width:640px){ .checklist{ columns:1; } }
+
+  .warn{
+    background:#f7ece6; border:1px solid #e6c8b6; border-radius:8px;
+    padding:16px 18px; margin:10px 0 4px;
+    font-size:14.5px; color:#6b3a26;
+  }
+  .warn strong{ color:var(--seal); }
+
+  .guide-card{
+    border:1px solid var(--line); border-radius:10px;
+    margin-bottom:20px; overflow:hidden; background:var(--paper-raised);
+  }
+  .guide-card > .gc-head{
+    background:var(--paper-deep);
+    padding:14px 20px;
+    font-weight:600; font-size:16px;
+    display:flex; align-items:center; gap:10px;
+    border-bottom:1px solid var(--line);
+  }
+  .guide-card > .gc-head .gnum{
+    font-family:'Noto Serif Thai',serif; color:var(--gold); font-weight:700;
+  }
+  .gc-body{ padding:18px 20px 20px; }
+  .gc-body p{ margin:0 0 10px; font-size:15px; color:var(--ink-soft); }
+  .gc-body ul{ margin:8px 0 12px; padding-left:20px; font-size:14.5px; color:var(--ink-soft); }
+  .gc-body li{ margin-bottom:6px; }
+  .sample{
+    background:var(--paper-deep);
+    border-left:3px solid var(--gold);
+    padding:12px 16px; margin-top:12px;
+    font-size:14px; color:var(--ink-soft);
+    font-family:'Sarabun',sans-serif;
+  }
+  .sample .lbl{
+    display:block; font-size:12px; letter-spacing:.02em; color:var(--gold);
+    font-weight:600; margin-bottom:5px;
+  }
+
+  footer.note{
+    max-width:1040px;margin:34px auto 0; padding:0 20px;
+    font-size:13px; color:var(--muted);
+  }
+
+  @media (max-width:700px){
+    .cover-inner{gap:18px;}
+    .seal{width:74px;height:74px;}
+    .seal span{font-size:10.5px;}
+    .clause{grid-template-columns:44px 1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-inner">
+    <div class="seal"><span>FOUNDATION<br>SEAL</span></div>
+    <div>
+      <h1>Guide to Establishing and Running a Thai Foundation</h1>
+      <p>A complete walkthrough of the registration process, required documents, legal requirements, and annual audit and reporting duties — plus how to draft each document — compiled from the official forms and regulations used when filing with a foundation registrar in Thailand.</p>
+      <div class="ref">Based on the Civil and Commercial Code provisions on foundations (มูลนิธิ) and the related official forms (Mor.Nor. 1, Mor.Nor. 2, Mor.Nor. 6, Mor.Nor. 7, and the committee-member certification form). Use this as preparatory reference only — always confirm current requirements with the local registrar before filing.</div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="tabbar" role="tablist">
+    <button class="tabbtn" role="tab" aria-selected="true" data-tab="t1"><span class="num">1</span>Setup Process</button>
+    <button class="tabbtn" role="tab" aria-selected="false" data-tab="t2"><span class="num">2</span>Required Documents</button>
+    <button class="tabbtn" role="tab" aria-selected="false" data-tab="t3"><span class="num">3</span>Legal Requirements</button>
+    <button class="tabbtn" role="tab" aria-selected="false" data-tab="t4"><span class="num">4</span>Closing Accounts &amp; Audit</button>
+    <button class="tabbtn" role="tab" aria-selected="false" data-tab="t5"><span class="num">5</span>Drafting Guide</button>
+  </div>
+
+  <div class="panelhost">
+
+    <section class="panel active" id="t1">
+      <p class="lede">From structuring the foundation before filing, through to annual reporting duties, changes of committee members or bylaws, and the steps to dissolve a foundation — laid out in chronological order so you can see the whole lifecycle at a glance.</p>
+
+      <div class="phase">
+        <div class="phase-head"><div class="ph-mark">A</div><h3>Before Filing — Structuring the Foundation</h3></div>
+        <div class="timeline">
+          <div class="step" data-n="1">
+            <h4>Define the foundation's objectives</h4>
+            <p>State the purpose clearly, avoid wording so broad that the registrar cannot evaluate it, and make sure it matches the activities you actually intend to carry out — e.g. education, patient welfare, religious support, or another public-benefit purpose.</p>
+          </div>
+          <div class="step" data-n="2">
+            <h4>Arrange the initial endowment</h4>
+            <p>A foundation must have assets set aside for its purpose from the outset. The asset owner must give a written pledge to transfer the assets to the foundation once registration is complete.</p>
+            <span class="doclink">Document: Letter of Pledge (deed of commitment)</span>
+          </div>
+          <div class="step" data-n="3">
+            <h4>Choose the foundation's name</h4>
+            <p>The name should reflect the purpose and must not duplicate or closely resemble another organization's name in a way that could cause confusion. If a person's or organization's name is used as part of the foundation's name, written permission from the name's owner is required.</p>
+            <span class="doclink">Document: Letter of Permission to Use a Name (if applicable)</span>
+          </div>
+          <div class="step" data-n="4">
+            <h4>Secure an office location</h4>
+            <p>A clear address is required for both the head office and any branch offices, together with the site owner's or possessor's written consent and a simple location map.</p>
+            <span class="doclink">Document: Letter of Permission to Use the Premises</span>
+          </div>
+          <div class="step" data-n="5">
+            <h4>Select the prospective committee members</h4>
+            <p>Every prospective committee member must complete a self-certification form disclosing nationality, occupation, assets, any prior work with other charitable organizations, and any criminal or civil case history.</p>
+            <span class="doclink">Document: Certification of a Prospective Committee Member</span>
+          </div>
+          <div class="step" data-n="6">
+            <h4>Draft the bylaws</h4>
+            <p>Draft the bylaws to cover every category the law requires (see the "Legal Requirements" tab for details) — the bylaws are the long-term rulebook for how the organization is run.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><div class="ph-mark">B</div><h3>Founding Meeting</h3></div>
+        <div class="timeline">
+          <div class="step" data-n="7">
+            <h4>Hold the founders' meeting</h4>
+            <p>The meeting must resolve to adopt the bylaws, appoint the first governing committee, and authorize a representative to file the application with the registrar. Record every resolution in the minutes.</p>
+            <span class="doclink">Document: Minutes of the Founding Meeting</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><div class="ph-mark">C</div><h3>Filing the Registration Application</h3></div>
+        <div class="timeline">
+          <div class="step" data-n="8">
+            <h4>File the application to establish the foundation</h4>
+            <p>File with the foundation registrar for the relevant area (Bangkok: the district office; other provinces: the district or provincial office), together with a complete supporting document set — typically three copies of each item.</p>
+          </div>
+          <div class="step" data-n="9">
+            <h4>The registration officer reviews the documents</h4>
+            <p>If inconsistencies are found — for example, the committee list in the bylaws not matching the meeting minutes, or an over-broad statement of purpose — the officer will request corrections before proceeding.</p>
+          </div>
+          <div class="step" data-n="10">
+            <h4>The registrar approves the application</h4>
+            <p>Once the documents are complete and correct, the registrar issues the certificate of foundation registration, giving the foundation legal-entity status under the law.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><div class="ph-mark">D</div><h3>After Registration — Ongoing Annual Duties</h3></div>
+        <div class="timeline">
+          <div class="step" data-n="11">
+            <h4>Set up accounting and tax registration</h4>
+            <p>Apply for a taxpayer identification number, open a bank account in the foundation's name kept separate from any committee member's personal account, and have the foundation's official seal made.</p>
+          </div>
+          <div class="step" data-n="12">
+            <h4>Carry out activities and keep records</h4>
+            <p>Keep evidence of donations, donation receipts, expense documents, and activity/project reports on an ongoing basis starting from year one.</p>
+          </div>
+          <div class="step" data-n="13">
+            <h4>Close the annual financial statements</h4>
+            <p>Prepare the annual financial statements and have them reviewed by an auditor before presenting them to the committee (see the "Closing Accounts &amp; Audit" tab for details).</p>
+          </div>
+          <div class="step" data-n="14">
+            <h4>File the annual activity report</h4>
+            <p>Submit the annual report on the foundation's operations to the registrar every year, summarizing the committee, objectives, activities, finances, and assets.</p>
+            <span class="doclink">Document: Annual Report on Foundation Operations</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><div class="ph-mark">E</div><h3>When Something Changes</h3></div>
+        <div class="timeline">
+          <div class="step" data-n="15">
+            <h4>Change committee members or amend the bylaws</h4>
+            <p>Hold a committee meeting to pass the relevant resolution, record it in the minutes, then file an application to register the change with the registrar. Amending the bylaws also requires a comparison table showing the old and new wording side by side.</p>
+            <span class="doclink">Document: Application to Register New/Changed Committee Members or Bylaw Amendments</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head"><div class="ph-mark">F</div><h3>Dissolving the Foundation (if applicable)</h3></div>
+        <div class="timeline">
+          <div class="step" data-n="16">
+            <h4>Resolve to dissolve the foundation</h4>
+            <p>The meeting resolves to dissolve the foundation and appoints a liquidator, then notifies the registrar of the dissolution together with the supporting documents.</p>
+            <span class="doclink">Document: Notice of Foundation Dissolution</span>
+          </div>
+          <div class="step" data-n="17">
+            <h4>The liquidator carries out the liquidation</h4>
+            <p>Publish notice of the dissolution in a newspaper, notify creditors in writing, prepare a balance sheet as of the dissolution date, dispose of assets, and settle all debts — with an auditor reviewing the process.</p>
+          </div>
+          <div class="step" data-n="18">
+            <h4>Report the completed liquidation</h4>
+            <p>Once liquidation is complete, the liquidator reports the results to the registrar. The foundation then ceases to exist as a legal entity.</p>
+            <span class="doclink">Document: Liquidation Report</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="t2">
+      <p class="lede">Documents are grouped by stage — the initial registration set, documents needed during ongoing operations, documents needed when something changes, and documents needed to dissolve the foundation. Click a category to expand it.</p>
+
+      <details class="doc-group" open>
+        <summary>A. Initial Registration Set (first filing)<span class="count">11 items</span></summary>
+        <div class="doc-body">
+          <div class="doc-item"><div class="stamp">1</div><div><h4>Application to Register the Foundation</h4><p>The main application form, naming the applicant, the foundation's name, the head office/branch office location, and a full list of attached documents.</p></div></div>
+          <div class="doc-item"><div class="stamp">2</div><div><h4>List of Foundation Committee Members</h4><p>Name, age, address, occupation, position, and appointment date for every committee member.</p></div></div>
+          <div class="doc-item"><div class="stamp">3</div><div><h4>Certification of a Prospective Committee Member</h4><p>Completed individually by every prospective committee member, disclosing personal information, assets, occupation, and related history.</p><span class="meta">Attach a copy of the national ID card or passport (for foreign nationals)</span></div></div>
+          <div class="doc-item"><div class="stamp">4</div><div><h4>Foundation Bylaws</h4><p>The organization's governing rulebook, covering name, location, objectives, endowment, committee, meetings, finances, and dissolution.</p></div></div>
+          <div class="doc-item"><div class="stamp">5</div><div><h4>Letter of Pledge</h4><p>The asset owner's written commitment to transfer the assets to the foundation within 30 days of successful registration.</p><span class="meta">Attach a bank certificate of the deposit account</span></div></div>
+          <div class="doc-item"><div class="stamp">6</div><div><h4>Letter of Permission to Use the Premises</h4><p>The property owner's or possessor's written consent to use the site as the office. Separate templates exist for an individual, a government agency, and a private company.</p><span class="meta">Attach proof of ownership or right of possession, e.g. a land title deed or lease agreement</span></div></div>
+          <div class="doc-item"><div class="stamp">7</div><div><h4>Letter of Permission to Use a Name</h4><p>Required when a person's or organization's name forms part of the foundation's name; written consent from the name's owner is needed.</p></div></div>
+          <div class="doc-item"><div class="stamp">8</div><div><h4>Location Map</h4><p>A simple map showing the location of the head office and any branch offices.</p></div></div>
+          <div class="doc-item"><div class="stamp">9</div><div><h4>Minutes of the Founding Meeting</h4><p>Records the resolutions adopting the bylaws, appointing the first committee, and authorizing the applicant.</p></div></div>
+          <div class="doc-item"><div class="stamp">10</div><div><h4>Copies of ID Cards / House Registration</h4><p>Of the applicant and other relevant parties named in the application, certified as true copies.</p></div></div>
+          <div class="doc-item"><div class="stamp">11</div><div><h4>Copy of the Will (if applicable)</h4><p>Where the assets for the foundation arise from a will.</p></div></div>
+        </div>
+      </details>
+
+      <details class="doc-group">
+        <summary>B. Documents for Ongoing Operations (annual)<span class="count">4 items</span></summary>
+        <div class="doc-body">
+          <div class="doc-item"><div class="stamp">1</div><div><h4>Annual Report on Foundation Operations</h4><p>Summarizes the committee, objectives, activities/projects, expenditure, income, and assets at the start and end of the year; filed with the registrar every year.</p></div></div>
+          <div class="doc-item"><div class="stamp">2</div><div><h4>Minutes of Committee/General Meetings</h4><p>Records every significant resolution during the year, including approval of the financial statements.</p></div></div>
+          <div class="doc-item"><div class="stamp">3</div><div><h4>Annual Financial Statements + Auditor's Report</h4><p>Shows the financial position and results of operations, reviewed by an auditor.</p></div></div>
+          <div class="doc-item"><div class="stamp">4</div><div><h4>Bank Statements for Every Account</h4><p>Used to reconcile recorded transactions; must cover every account held in the foundation's name.</p></div></div>
+        </div>
+      </details>
+
+      <details class="doc-group">
+        <summary>C. Documents When Something Changes<span class="count">6 items</span></summary>
+        <div class="doc-body">
+          <div class="doc-item"><div class="stamp">1</div><div><h4>Application to Register Changed Committee Members or Bylaw Amendments</h4><p>The same form covers a full committee replacement, a partial change, or a bylaw amendment.</p></div></div>
+          <div class="doc-item"><div class="stamp">2</div><div><h4>Comparison Table of Old and New Bylaws</h4><p>Required when amending the bylaws; shows the original wording alongside the amended wording, clause by clause.</p></div></div>
+          <div class="doc-item"><div class="stamp">3</div><div><h4>Bylaws Submitted for Registration of the Amendment</h4><p>Identifies the clauses being amended and the new wording that replaces them, signed by the chairperson.</p></div></div>
+          <div class="doc-item"><div class="stamp">4</div><div><h4>List of the New Committee Members</h4><p>Names those appointed to replace outgoing members, noting in a remarks column where someone is filling an unexpired term.</p></div></div>
+          <div class="doc-item"><div class="stamp">5</div><div><h4>Minutes of the Meeting That Resolved the Change</h4><p>Records specifically the resolution relating to the committee change or bylaw amendment.</p></div></div>
+          <div class="doc-item"><div class="stamp">6</div><div><h4>Power of Attorney (if applicable)</h4><p>Used when authorizing someone else to file on the foundation's behalf; must bear a 10-baht duty stamp and be accompanied by a copy of the grantor's ID card.</p></div></div>
+        </div>
+      </details>
+
+      <details class="doc-group">
+        <summary>D. Documents to Dissolve the Foundation<span class="count">4 items</span></summary>
+        <div class="doc-body">
+          <div class="doc-item"><div class="stamp">1</div><div><h4>Notice of Foundation Dissolution</h4><p>States the reason for dissolution, with the original registration certificate, bylaws, and list of the current committee attached.</p></div></div>
+          <div class="doc-item"><div class="stamp">2</div><div><h4>Appointment of the Liquidator</h4><p>Names the person responsible for carrying the liquidation through to completion.</p></div></div>
+          <div class="doc-item"><div class="stamp">3</div><div><h4>Copy of the Minutes Resolving to Dissolve</h4><p>Evidence that the meeting resolved to dissolve the foundation properly under the bylaws.</p></div></div>
+          <div class="doc-item"><div class="stamp">4</div><div><h4>Liquidation Report</h4><p>Summarizes the newspaper notice, notice to creditors, balance sheet, statement of assets and liabilities, disposal of assets, and settlement of all debts.</p></div></div>
+        </div>
+      </details>
+
+      <details class="doc-group">
+        <summary>E. Reference Documents (for verifying officials)<span class="count">2 items</span></summary>
+        <div class="doc-body">
+          <div class="doc-item"><div class="stamp">i</div><div><h4>Registrar's ID Card Template</h4><p>The card format issued to the Minister of Interior or a delegate acting as registrar, used to verify identity when carrying out official duties.</p></div></div>
+          <div class="doc-item"><div class="stamp">ii</div><div><h4>Registration Officer's ID Card Template</h4><p>The card format issued to officials who work on foundation registration matters, used to verify identity when an applicant deals with the office.</p></div></div>
+        </div>
+      </details>
+    </section>
+
+    <section class="panel" id="t3">
+      <p class="lede">The key legal points relating to foundations — from the governing law and the registrar's authority through to what the bylaws and the committee members themselves are required to satisfy.</p>
+
+      <h2 class="sec">Governing Law and Authority<span class="tag">Basics</span></h2>
+      <div class="clause">
+        <div class="cnum">1</div>
+        <div>
+          <h4>The primary governing law</h4>
+          <p>Foundations are governed by the provisions on foundations in the Civil and Commercial Code, together with the ministerial regulations issued under that Code, which set out the official forms, the registration procedure, and the various reporting duties.</p>
+        </div>
+      </div>
+      <div class="clause">
+        <div class="cnum">2</div>
+        <div>
+          <h4>The foundation registrar</h4>
+          <p>The registration authority depends on where the foundation's head office is located.</p>
+          <div class="pill-row">
+            <span class="pill">Bangkok — the Bangkok Foundation Registrar (district office)</span>
+            <span class="pill">Other provinces — the Provincial Foundation Registrar (district or provincial office)</span>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="sec">What the Bylaws Must Cover<span class="tag">Bylaws</span></h2>
+      <p class="secsub">At minimum, the bylaws should cover the following categories so that the foundation can be governed in practice and pass registration review.</p>
+      <div class="clause">
+        <div class="cnum">1</div>
+        <div><h4>Name and emblem of the foundation</h4><p>Together with the reason for or background to the name, where a person's or organization's name has been used as part of it.</p></div>
+      </div>
+      <div class="clause">
+        <div class="cnum">2</div>
+        <div><h4>Office location</h4><p>Both the head office and any branch offices (if applicable).</p></div>
+      </div>
+      <div class="clause">
+        <div class="cnum">3</div>
+        <div><h4>Objectives</h4><p>Stated clearly, without being broader than what the foundation will actually carry out.</p></div>
+      </div>
+      <div class="clause">
+        <div class="cnum">4</div>
+        <div><h4>Endowment and assets</h4><p>The assets set aside for the foundation's purpose, and the criteria for spending them.</p></div>
+      </div>
+      <div class="clause">
+        <div class="cnum">5</div>
+        <div><h4>Committee qualifications, size, and term</h4><p>Including the conditions for leaving office and for filling a vacancy.</p></div>
+      </div>
+      <div class="clause">
+        <div class="cnum">6</div>
+        <div><h4>Quorum and voting</h4><p>The minimum number of committee members required to attend a meeting, and the majority needed to pass a resolution.</p></div>
+      </div>
+      <div class="clause">
+        <div class="cnum">7</div>
+        <div><h4>Annual general meeting and spending authority</h4><p>The month the annual general meeting will be held, and the spending limit the chairperson or treasurer may approve without further authorization.</p></div>
+      </div>
+      <div class="clause">
+        <div class="cnum">8</div>
+        <div><h4>Amending the bylaws and dissolving the foundation</h4><p>The method for requesting amendments, and the procedure to follow when winding up the foundation.</p></div>
+      </div>
+
+      <h2 class="sec">Committee Member Qualifications and Disclosures<span class="tag">Certification Form</span></h2>
+      <div class="clause">
+        <div class="cnum">1</div>
+        <div>
+          <h4>Information a prospective committee member must disclose</h4>
+          <ul>
+            <li>Nationality — a foreign national must state their passport number, residence permit, and work permit (if any)</li>
+            <li>Occupation, position, income, and place of work</li>
+            <li>Assets currently held</li>
+            <li>Prior work history with other charitable organizations (if any)</li>
+            <li>Any criminal or civil case in which a court has issued a final judgment</li>
+          </ul>
+        </div>
+      </div>
+      <div class="clause">
+        <div class="cnum">2</div>
+        <div>
+          <h4>Committee size and term (typical practice)</h4>
+          <p>Most bylaws set the committee size at not fewer than 3 and not more than 15 members, with a term of 2–3 years, and generally prohibit serving the same position for more than one consecutive term, except for positions the bylaws specifically exempt. The actual figures must be set out in each foundation's own bylaws.</p>
+        </div>
+      </div>
+
+      <h2 class="sec">Practical Details Often Overlooked<span class="tag">Practice</span></h2>
+      <div class="clause">
+        <div class="cnum">1</div>
+        <div><h4>Authorizing someone else to file documents</h4><p>Must be done through a written power of attorney bearing a 10-baht duty stamp, with a copy of the grantor's ID card attached.</p></div>
+      </div>
+      <div class="clause">
+        <div class="cnum">2</div>
+        <div><h4>A bylaw amendment only takes effect once registered</h4><p>Any amendment must be filed for registration with the registrar before it takes effect, together with a comparison table showing the old wording against the new.</p></div>
+      </div>
+      <div class="clause">
+        <div class="cnum">3</div>
+        <div><h4>Standard for the officer/registrar ID card</h4><p>The card size is 5.4 × 8.4 cm, the photo is 2.5 × 3 cm, and the official emblem sits within a circle 3.5 cm in diameter, stamped in red ink — useful reference for verifying the identity of an official you deal with.</p></div>
+      </div>
+    </section>
+
+    <section class="panel" id="t4">
+      <p class="lede">A foundation has reporting duties to the registrar and must have its accounts audited every year — here is the sequence for closing the books, the documents to prepare, and the most common pitfalls.</p>
+
+      <h2 class="sec">Annual Reporting Duty<span class="tag">To the Registrar</span></h2>
+      <p class="secsub">Every year the foundation must file an annual operations report, which must include at least the following information.</p>
+      <ul class="checklist">
+        <li>Names and positions of the foundation's committee members</li>
+        <li>The foundation's objectives</li>
+        <li>Activities/projects carried out in pursuit of those objectives</li>
+        <li>Spending, broken down by activity and by office overhead</li>
+        <li>Income, broken down by source (interest, activities, donations, other income)</li>
+        <li>The foundation's assets at the start of registration and as of the report date</li>
+        <li>Committee members' tenure and terms of office</li>
+        <li>Any other matters requiring a report, or recommendations</li>
+      </ul>
+
+      <h2 class="sec">Steps to Close the Annual Financial Statements<span class="tag">Accounting</span></h2>
+      <div class="flow">
+        <div class="flow-step"><div class="fdot"></div><div><h4>Verify the organization's status and accounting period</h4><p>Check the name, registration number, address, current committee list, bylaws, and bank account status all match reality before beginning the bookkeeping.</p></div></div>
+        <div class="flow-step"><div class="fdot"></div><div><h4>Gather income records</h4><p>Break income down clearly, e.g. general donations, project-specific donations, sponsorships, and bank interest received.</p></div></div>
+        <div class="flow-step"><div class="fdot"></div><div><h4>Gather expense records</h4><p>Every expense should have supporting documentation, such as receipts, payment vouchers, expense approvals, and proof of transfer.</p></div></div>
+        <div class="flow-step"><div class="fdot"></div><div><h4>Reconcile the bank accounts</h4><p>Check the statement for every account against the recorded transactions, including accounts with little activity.</p></div></div>
+        <div class="flow-step"><div class="fdot"></div><div><h4>Post income and expenses to the accounts</h4><p>Separate income, expenses, assets, liabilities, and cash on hand by category — do not lump different categories together.</p></div></div>
+        <div class="flow-step"><div class="fdot"></div><div><h4>Make year-end adjusting entries</h4><p>For example, accrued interest receivable, accrued expenses payable, asset depreciation, and funds or donations earmarked for a specific purpose.</p></div></div>
+        <div class="flow-step"><div class="fdot"></div><div><h4>Prepare the annual financial statements</h4><p>Show cash, bank deposits, assets, liabilities, income, expenses, and cash on hand in a way that traces back to the source documents.</p></div></div>
+        <div class="flow-step"><div class="fdot"></div><div><h4>Send the statements to an auditor</h4><p>The auditor reviews the figures, supporting documents, bank transactions, and the reasonableness of significant entries.</p></div></div>
+        <div class="flow-step"><div class="fdot"></div><div><h4>Present the statements to the committee</h4><p>Record the committee's acknowledgment or approval in the meeting minutes, in line with the authority the bylaws give it.</p></div></div>
+        <div class="flow-step"><div class="fdot"></div><div><h4>File the records by year</h4><p>Keep separate files for income, expenses, bank records, tax, meetings, and financial statements so the following year's work is easier and past records can be checked if needed.</p></div></div>
+      </div>
+
+      <h2 class="sec">Checklist Before Sending Documents to the Auditor<span class="tag">Checklist</span></h2>
+      <ul class="checklist">
+        <li>Bank statements for every account</li>
+        <li>Prior-year financial statements</li>
+        <li>Prior-year auditor's report</li>
+        <li>Complete registration documents</li>
+        <li>An accurate current committee list</li>
+        <li>Donation receipts and donor list</li>
+        <li>Complete receipts or expense records</li>
+        <li>Project documents or activity reports</li>
+        <li>Withholding tax documents (if any)</li>
+        <li>Asset register and depreciation schedule</li>
+        <li>Minutes relevant to approving the financial statements</li>
+        <li>Any unexplained bank transfers (if so, an explanation is needed)</li>
+      </ul>
+
+      <h2 class="sec">Points to Watch When Closing the Books<span class="tag">Important</span></h2>
+      <div class="warn"><strong>Donations need clear evidence</strong> — record who gave it, when, how much, and which account it entered. The total on donation receipts should reconcile with the amount received into the bank.</div>
+      <div class="warn"><strong>Expenses must relate to the foundation's objectives</strong> — a committee member's personal expenses, or any item without supporting documents, will be flagged by the auditor.</div>
+      <div class="warn"><strong>Statements must cover every account</strong> — including accounts with little activity, since they may still carry interest or a balance that needs to be recorded.</div>
+      <div class="warn"><strong>The committee must acknowledge and approve the statements</strong> — the financial statements are not solely the accountant's responsibility; the committee's role is central to the foundation's transparency.</div>
+      <div class="warn"><strong>Do not let several years' books go unclosed</strong> — if several years are outstanding, start with the earliest, since the opening balance from that year affects every year after it.</div>
+
+      <h2 class="sec">Liquidation Upon Dissolution<span class="tag">If Dissolving</span></h2>
+      <div class="flow">
+        <div class="flow-step"><div class="fdot"></div><div><h4>Publish notice of the dissolution</h4><p>Publish an announcement in a newspaper as the law requires.</p></div></div>
+        <div class="flow-step"><div class="fdot"></div><div><h4>Notify creditors in writing</h4><p>So creditors can submit claims within the specified period.</p></div></div>
+        <div class="flow-step"><div class="fdot"></div><div><h4>Prepare the balance sheet as of the dissolution date</h4><p>Together with a detailed statement of assets and liabilities, reviewed by an auditor.</p></div></div>
+        <div class="flow-step"><div class="fdot"></div><div><h4>Dispose of assets and settle debts</h4><p>Pay creditors, collect from debtors, and record any case where a creditor cannot be located.</p></div></div>
+        <div class="flow-step"><div class="fdot"></div><div><h4>Report the liquidation results to the registrar</h4><p>Attach all supporting documents to the report — once the registrar acknowledges it, the foundation ceases to exist as a legal entity.</p></div></div>
+      </div>
+    </section>
+
+    <section class="panel" id="t5">
+      <p class="lede">Practical guidance for drafting each key document, with the outline each section should follow, to reduce the chance of being asked to revise it when you actually file.</p>
+
+      <div class="guide-card">
+        <div class="gc-head"><span class="gnum">1</span> Drafting the Foundation's Objectives</div>
+        <div class="gc-body">
+          <p>Write clearly and concretely, and make sure it matches the activities you will actually carry out. Avoid wording broad enough to be read several different ways.</p>
+          <ul>
+            <li>Name the target group or issue specifically — e.g. orphaned children, low-income patients, students lacking funds for school</li>
+            <li>Use action-oriented language — e.g. promote, support, assist, preserve, conserve</li>
+            <li>If there are several objectives, list them as separate sub-items rather than one combined sentence</li>
+          </ul>
+          <div class="sample">
+            <span class="lbl">Comparison</span>
+            Too broad: "To help society in every way." <br>
+            Clearer: "To provide scholarships to primary-school students who lack the financial means to continue their education."
+          </div>
+        </div>
+      </div>
+
+      <div class="guide-card">
+        <div class="gc-head"><span class="gnum">2</span> Drafting the Bylaws</div>
+        <div class="gc-body">
+          <p>Organize the bylaws into categories in order so they are easy to review and cover everything the law requires (see the categories listed in the "Legal Requirements" tab).</p>
+          <ul>
+            <li>Write each category as short, clear clauses — brevity is fine as long as the meaning is complete</li>
+            <li>State the committee size as a range, e.g. "not fewer than __ and not more than __ members," for flexibility</li>
+            <li>Set the committee term and the conditions for renewal clearly to avoid disputes later</li>
+            <li>State explicitly the spending limit the chairperson or treasurer may approve without further authorization</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="guide-card">
+        <div class="gc-head"><span class="gnum">3</span> Drafting the Minutes of the Founding Meeting</div>
+        <div class="gc-body">
+          <p>Follow the standard seven-part structure.</p>
+          <ul>
+            <li>State the meeting number and year (e.g. Meeting No. 1/2025)</li>
+            <li>State the date of the meeting</li>
+            <li>State the meeting location</li>
+            <li>List the name of every attendee</li>
+            <li>Record the three main resolutions: adopting the bylaws, authorizing the applicant, and appointing the first governing committee — together with the resolution reached on each</li>
+            <li>Have the secretary or an appointed member sign as the minute-taker</li>
+            <li>Have the chairperson, or whoever presided, sign as the reviewer of the minutes</li>
+          </ul>
+          <div class="sample">
+            <span class="lbl">Sample resolution wording</span>
+            "The meeting unanimously resolved to adopt these bylaws for submission to the authorities."
+          </div>
+        </div>
+      </div>
+
+      <div class="guide-card">
+        <div class="gc-head"><span class="gnum">4</span> Drafting the Registration Application</div>
+        <div class="gc-body">
+          <p>State the applicant's details exactly as they appear on their ID card, and make sure the office location matches what is stated in the bylaws and the letter of permission to use the premises.</p>
+          <ul>
+            <li>Write the foundation's name to match the bylaws exactly, letter for letter</li>
+            <li>State the head office and any branch office locations separately and clearly</li>
+            <li>Tick the attached-documents list to match exactly what is actually attached — neither more nor fewer items</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="guide-card">
+        <div class="gc-head"><span class="gnum">5</span> Drafting the Letter of Pledge</div>
+        <div class="gc-body">
+          <p>State the person making the pledge and the assets or amount to be given clearly, along with the timing condition.</p>
+          <ul>
+            <li>State the amount or assets both in figures and in words</li>
+            <li>State the timing condition for the transfer (typically within 30 days of successful registration)</li>
+            <li>Have the pledgor, the recipient, and two witnesses sign, and attach a bank certificate of the deposit account</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="guide-card">
+        <div class="gc-head"><span class="gnum">6</span> Drafting the Letter of Permission to Use the Premises / Name</div>
+        <div class="gc-body">
+          <p>State the party granting permission consistently with the ownership evidence, and define the scope of the permission clearly.</p>
+          <ul>
+            <li>For an individual: state their name and address, and attach proof of ownership or right of possession</li>
+            <li>For an agency or company: the signatory must be the most senior officer or someone specifically authorized to sign on the organization's behalf</li>
+            <li>State the start date of the permission and attach a location map</li>
+            <li>Always have the grantor and two witnesses sign</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="guide-card">
+        <div class="gc-head"><span class="gnum">7</span> Drafting the Annual Operations Report</div>
+        <div class="gc-body">
+          <p>Follow the nine-part structure of the official form so it is easy to review and complete.</p>
+          <ul>
+            <li>The foundation's committee members (with positions)</li>
+            <li>The foundation's objectives</li>
+            <li>Activities/projects carried out</li>
+            <li>The foundation's spending</li>
+            <li>The foundation's income (by category)</li>
+            <li>Sources of income</li>
+            <li>The foundation's assets (start and end of year)</li>
+            <li>Committee members' terms of office</li>
+            <li>Other matters requiring a report, or recommendations</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<footer class="note">
+  This guide is compiled as introductory reference material only. The exact documents and procedures can vary by location and by the discretion of the individual registrar. Always confirm requirements with the relevant registration office before filing any actual documents.
+</footer>
+
+<script>
+  const tabs = document.querySelectorAll('.tabbtn');
+  const panels = document.querySelectorAll('.panel');
+  tabs.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      tabs.forEach(b=>b.setAttribute('aria-selected','false'));
+      panels.forEach(p=>p.classList.remove('active'));
+      btn.setAttribute('aria-selected','true');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+      document.querySelector('.wrap').scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+</script>
+
+</body>
+</html>
